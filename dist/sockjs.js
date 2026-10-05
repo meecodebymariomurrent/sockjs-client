@@ -255,9 +255,7 @@ module.exports = function(SockJS, availableTransports) {
   transportMap[InfoIframeReceiver.transportName] = InfoIframeReceiver;
   var parentOrigin;
 
-  /* eslint-disable camelcase */
   SockJS.bootstrap_iframe = function() {
-    /* eslint-enable camelcase */
     var facade;
     iframeUtils.currentWindowId = loc.hash.slice(1);
     var onMessage = function(e) {
@@ -2617,7 +2615,8 @@ XhrReceiver.prototype._chunkHandler = function(status, text) {
     return;
   }
 
-  for (var idx = -1; ; this.bufferPosition += idx + 1) {
+  var idx;
+  for (;; this.bufferPosition += idx + 1) {
     var buf = text.slice(this.bufferPosition);
     idx = buf.indexOf('\n');
     if (idx === -1) {

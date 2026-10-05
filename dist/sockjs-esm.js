@@ -1908,7 +1908,8 @@ var require_sockjs = __commonJS({
               if (status !== 200 || !text) {
                 return;
               }
-              for (var idx = -1; ; this.bufferPosition += idx + 1) {
+              var idx;
+              for (; ; this.bufferPosition += idx + 1) {
                 var buf = text.slice(this.bufferPosition);
                 idx = buf.indexOf("\n");
                 if (idx === -1) {
@@ -2770,26 +2771,98 @@ var require_sockjs = __commonJS({
       }, {}], 54: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
-            "use strict";
-            function _typeof(obj) {
-              if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-                _typeof = function _typeof2(obj2) {
-                  return typeof obj2;
-                };
-              } else {
-                _typeof = function _typeof2(obj2) {
-                  return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
-                };
-              }
-              return _typeof(obj);
-            }
-            exports3.log = log;
             exports3.formatArgs = formatArgs;
             exports3.save = save;
             exports3.load = load;
             exports3.useColors = useColors;
             exports3.storage = localstorage();
-            exports3.colors = ["#0000CC", "#0000FF", "#0033CC", "#0033FF", "#0066CC", "#0066FF", "#0099CC", "#0099FF", "#00CC00", "#00CC33", "#00CC66", "#00CC99", "#00CCCC", "#00CCFF", "#3300CC", "#3300FF", "#3333CC", "#3333FF", "#3366CC", "#3366FF", "#3399CC", "#3399FF", "#33CC00", "#33CC33", "#33CC66", "#33CC99", "#33CCCC", "#33CCFF", "#6600CC", "#6600FF", "#6633CC", "#6633FF", "#66CC00", "#66CC33", "#9900CC", "#9900FF", "#9933CC", "#9933FF", "#99CC00", "#99CC33", "#CC0000", "#CC0033", "#CC0066", "#CC0099", "#CC00CC", "#CC00FF", "#CC3300", "#CC3333", "#CC3366", "#CC3399", "#CC33CC", "#CC33FF", "#CC6600", "#CC6633", "#CC9900", "#CC9933", "#CCCC00", "#CCCC33", "#FF0000", "#FF0033", "#FF0066", "#FF0099", "#FF00CC", "#FF00FF", "#FF3300", "#FF3333", "#FF3366", "#FF3399", "#FF33CC", "#FF33FF", "#FF6600", "#FF6633", "#FF9900", "#FF9933", "#FFCC00", "#FFCC33"];
+            exports3.destroy = /* @__PURE__ */ (() => {
+              let warned = false;
+              return () => {
+                if (!warned) {
+                  warned = true;
+                  console.warn("Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.");
+                }
+              };
+            })();
+            exports3.colors = [
+              "#0000CC",
+              "#0000FF",
+              "#0033CC",
+              "#0033FF",
+              "#0066CC",
+              "#0066FF",
+              "#0099CC",
+              "#0099FF",
+              "#00CC00",
+              "#00CC33",
+              "#00CC66",
+              "#00CC99",
+              "#00CCCC",
+              "#00CCFF",
+              "#3300CC",
+              "#3300FF",
+              "#3333CC",
+              "#3333FF",
+              "#3366CC",
+              "#3366FF",
+              "#3399CC",
+              "#3399FF",
+              "#33CC00",
+              "#33CC33",
+              "#33CC66",
+              "#33CC99",
+              "#33CCCC",
+              "#33CCFF",
+              "#6600CC",
+              "#6600FF",
+              "#6633CC",
+              "#6633FF",
+              "#66CC00",
+              "#66CC33",
+              "#9900CC",
+              "#9900FF",
+              "#9933CC",
+              "#9933FF",
+              "#99CC00",
+              "#99CC33",
+              "#CC0000",
+              "#CC0033",
+              "#CC0066",
+              "#CC0099",
+              "#CC00CC",
+              "#CC00FF",
+              "#CC3300",
+              "#CC3333",
+              "#CC3366",
+              "#CC3399",
+              "#CC33CC",
+              "#CC33FF",
+              "#CC6600",
+              "#CC6633",
+              "#CC9900",
+              "#CC9933",
+              "#CCCC00",
+              "#CCCC33",
+              "#FF0000",
+              "#FF0033",
+              "#FF0066",
+              "#FF0099",
+              "#FF00CC",
+              "#FF00FF",
+              "#FF3300",
+              "#FF3333",
+              "#FF3366",
+              "#FF3399",
+              "#FF33CC",
+              "#FF33FF",
+              "#FF6600",
+              "#FF6633",
+              "#FF9900",
+              "#FF9933",
+              "#FFCC00",
+              "#FFCC33"
+            ];
             function useColors() {
               if (typeof window !== "undefined" && window.process && (window.process.type === "renderer" || window.process.__nwjs)) {
                 return true;
@@ -2797,10 +2870,11 @@ var require_sockjs = __commonJS({
               if (typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
                 return false;
               }
+              let m;
               return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // Is firebug? http://stackoverflow.com/a/398120/376773
               typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || // Is firefox >= v31?
               // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-              typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
+              typeof navigator !== "undefined" && navigator.userAgent && (m = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(m[1], 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
               typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
             }
             function formatArgs(args) {
@@ -2808,11 +2882,11 @@ var require_sockjs = __commonJS({
               if (!this.useColors) {
                 return;
               }
-              var c = "color: " + this.color;
+              const c = "color: " + this.color;
               args.splice(1, 0, c, "color: inherit");
-              var index = 0;
-              var lastC = 0;
-              args[0].replace(/%[a-zA-Z%]/g, function(match) {
+              let index = 0;
+              let lastC = 0;
+              args[0].replace(/%[a-zA-Z%]/g, (match) => {
                 if (match === "%%") {
                   return;
                 }
@@ -2823,10 +2897,8 @@ var require_sockjs = __commonJS({
               });
               args.splice(lastC, 0, c);
             }
-            function log() {
-              var _console;
-              return (typeof console === "undefined" ? "undefined" : _typeof(console)) === "object" && console.log && (_console = console).log.apply(_console, arguments);
-            }
+            exports3.log = console.debug || console.log || (() => {
+            });
             function save(namespaces) {
               try {
                 if (namespaces) {
@@ -2838,9 +2910,9 @@ var require_sockjs = __commonJS({
               }
             }
             function load() {
-              var r;
+              let r;
               try {
-                r = exports3.storage.getItem("debug");
+                r = exports3.storage.getItem("debug") || exports3.storage.getItem("DEBUG");
               } catch (error) {
               }
               if (!r && typeof process !== "undefined" && "env" in process) {
@@ -2855,7 +2927,7 @@ var require_sockjs = __commonJS({
               }
             }
             module3.exports = require2("./common")(exports3);
-            var formatters = module3.exports.formatters;
+            const { formatters } = module3.exports;
             formatters.j = function(v) {
               try {
                 return JSON.stringify(v);
@@ -2866,7 +2938,6 @@ var require_sockjs = __commonJS({
           }).call(this);
         }).call(this, { env: {} });
       }, { "./common": 55 }], 55: [function(require2, module3, exports3) {
-        "use strict";
         function setup(env) {
           createDebug.debug = createDebug;
           createDebug.default = createDebug;
@@ -2875,16 +2946,16 @@ var require_sockjs = __commonJS({
           createDebug.enable = enable;
           createDebug.enabled = enabled;
           createDebug.humanize = require2("ms");
-          Object.keys(env).forEach(function(key) {
+          createDebug.destroy = destroy;
+          Object.keys(env).forEach((key) => {
             createDebug[key] = env[key];
           });
-          createDebug.instances = [];
           createDebug.names = [];
           createDebug.skips = [];
           createDebug.formatters = {};
           function selectColor(namespace) {
-            var hash = 0;
-            for (var i = 0; i < namespace.length; i++) {
+            let hash = 0;
+            for (let i = 0; i < namespace.length; i++) {
               hash = (hash << 5) - hash + namespace.charCodeAt(i);
               hash |= 0;
             }
@@ -2892,17 +2963,17 @@ var require_sockjs = __commonJS({
           }
           createDebug.selectColor = selectColor;
           function createDebug(namespace) {
-            var prevTime;
-            function debug() {
+            let prevTime;
+            let enableOverride = null;
+            let namespacesCache;
+            let enabledCache;
+            function debug(...args) {
               if (!debug.enabled) {
                 return;
               }
-              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-              }
-              var self2 = debug;
-              var curr = Number(/* @__PURE__ */ new Date());
-              var ms = curr - (prevTime || curr);
+              const self2 = debug;
+              const curr = Number(/* @__PURE__ */ new Date());
+              const ms = curr - (prevTime || curr);
               self2.diff = ms;
               self2.prev = prevTime;
               self2.curr = curr;
@@ -2911,15 +2982,15 @@ var require_sockjs = __commonJS({
               if (typeof args[0] !== "string") {
                 args.unshift("%O");
               }
-              var index = 0;
-              args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
+              let index = 0;
+              args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
                 if (match === "%%") {
-                  return match;
+                  return "%";
                 }
                 index++;
-                var formatter = createDebug.formatters[format];
+                const formatter = createDebug.formatters[format];
                 if (typeof formatter === "function") {
-                  var val = args[index];
+                  const val = args[index];
                   match = formatter.call(self2, val);
                   args.splice(index, 1);
                   index--;
@@ -2927,71 +2998,99 @@ var require_sockjs = __commonJS({
                 return match;
               });
               createDebug.formatArgs.call(self2, args);
-              var logFn = self2.log || createDebug.log;
+              const logFn = self2.log || createDebug.log;
               logFn.apply(self2, args);
             }
             debug.namespace = namespace;
-            debug.enabled = createDebug.enabled(namespace);
             debug.useColors = createDebug.useColors();
-            debug.color = selectColor(namespace);
-            debug.destroy = destroy;
+            debug.color = createDebug.selectColor(namespace);
             debug.extend = extend;
+            debug.destroy = createDebug.destroy;
+            Object.defineProperty(debug, "enabled", {
+              enumerable: true,
+              configurable: false,
+              get: () => {
+                if (enableOverride !== null) {
+                  return enableOverride;
+                }
+                if (namespacesCache !== createDebug.namespaces) {
+                  namespacesCache = createDebug.namespaces;
+                  enabledCache = createDebug.enabled(namespace);
+                }
+                return enabledCache;
+              },
+              set: (v) => {
+                enableOverride = v;
+              }
+            });
             if (typeof createDebug.init === "function") {
               createDebug.init(debug);
             }
-            createDebug.instances.push(debug);
             return debug;
           }
-          function destroy() {
-            var index = createDebug.instances.indexOf(this);
-            if (index !== -1) {
-              createDebug.instances.splice(index, 1);
-              return true;
-            }
-            return false;
-          }
           function extend(namespace, delimiter) {
-            return createDebug(this.namespace + (typeof delimiter === "undefined" ? ":" : delimiter) + namespace);
+            const newDebug = createDebug(this.namespace + (typeof delimiter === "undefined" ? ":" : delimiter) + namespace);
+            newDebug.log = this.log;
+            return newDebug;
           }
           function enable(namespaces) {
             createDebug.save(namespaces);
+            createDebug.namespaces = namespaces;
             createDebug.names = [];
             createDebug.skips = [];
-            var i;
-            var split = (typeof namespaces === "string" ? namespaces : "").split(/[\s,]+/);
-            var len = split.length;
-            for (i = 0; i < len; i++) {
-              if (!split[i]) {
-                continue;
-              }
-              namespaces = split[i].replace(/\*/g, ".*?");
-              if (namespaces[0] === "-") {
-                createDebug.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
+            const split = (typeof namespaces === "string" ? namespaces : "").trim().replace(/\s+/g, ",").split(",").filter(Boolean);
+            for (const ns of split) {
+              if (ns[0] === "-") {
+                createDebug.skips.push(ns.slice(1));
               } else {
-                createDebug.names.push(new RegExp("^" + namespaces + "$"));
+                createDebug.names.push(ns);
               }
             }
-            for (i = 0; i < createDebug.instances.length; i++) {
-              var instance = createDebug.instances[i];
-              instance.enabled = createDebug.enabled(instance.namespace);
-            }
           }
-          function disable() {
-            createDebug.enable("");
-          }
-          function enabled(name) {
-            if (name[name.length - 1] === "*") {
-              return true;
-            }
-            var i;
-            var len;
-            for (i = 0, len = createDebug.skips.length; i < len; i++) {
-              if (createDebug.skips[i].test(name)) {
+          function matchesTemplate(search, template) {
+            let searchIndex = 0;
+            let templateIndex = 0;
+            let starIndex = -1;
+            let matchIndex = 0;
+            while (searchIndex < search.length) {
+              if (templateIndex < template.length && (template[templateIndex] === search[searchIndex] || template[templateIndex] === "*")) {
+                if (template[templateIndex] === "*") {
+                  starIndex = templateIndex;
+                  matchIndex = searchIndex;
+                  templateIndex++;
+                } else {
+                  searchIndex++;
+                  templateIndex++;
+                }
+              } else if (starIndex !== -1) {
+                templateIndex = starIndex + 1;
+                matchIndex++;
+                searchIndex = matchIndex;
+              } else {
                 return false;
               }
             }
-            for (i = 0, len = createDebug.names.length; i < len; i++) {
-              if (createDebug.names[i].test(name)) {
+            while (templateIndex < template.length && template[templateIndex] === "*") {
+              templateIndex++;
+            }
+            return templateIndex === template.length;
+          }
+          function disable() {
+            const namespaces = [
+              ...createDebug.names,
+              ...createDebug.skips.map((namespace) => "-" + namespace)
+            ].join(",");
+            createDebug.enable("");
+            return namespaces;
+          }
+          function enabled(name) {
+            for (const skip of createDebug.skips) {
+              if (matchesTemplate(name, skip)) {
+                return false;
+              }
+            }
+            for (const ns of createDebug.names) {
+              if (matchesTemplate(name, ns)) {
                 return true;
               }
             }
@@ -3002,6 +3101,9 @@ var require_sockjs = __commonJS({
               return val.stack || val.message;
             }
             return val;
+          }
+          function destroy() {
+            console.warn("Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.");
           }
           createDebug.enable(createDebug.load());
           return createDebug;

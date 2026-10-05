@@ -1,5 +1,4 @@
-/* eslint-env worker */
-/* global SockJS */
+/* global SockJS, importScripts */
 'use strict';
 importScripts('sockjs.js');
 
