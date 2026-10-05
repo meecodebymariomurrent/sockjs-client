@@ -1,5 +1,14 @@
-1.6.2
+2.0.0
 ==
+Breaking
+ * Require Node.js >= 22 (active/maintenance LTS). CI now tests Node 22 and 24; Node 18 and 20 are end of life.
+ * Replace `faye-websocket` with `ws` as the Node.js WebSocket client. The `transportOptions.websocket` options
+   `headers`, `tls`, `ca`, `ping` and `maxLength` keep working. The faye-only `proxy`, `net` and `extensions`
+   options are no longer supported; pass an `agent` (e.g. an HTTP(S) proxy agent) instead. permessage-deflate
+   stays disabled unless `perMessageDeflate` is passed.
+
+Other Changes
+ * Added Node.js WebSocket driver tests (headers, TLS/CA, ping, close codes, connection failure).
  * Added ECMAScript build with TypeScript types.
 
 1.6.1

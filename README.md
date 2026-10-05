@@ -284,6 +284,25 @@ session stickiness, take a look at the
 [SockJS-node readme](https://github.com/sockjs/sockjs-node#readme).
 
 
+### Node.js
+
+When used from Node.js (not in a browser), sockjs-client requires Node.js 22 or newer
+and uses [ws](https://github.com/websockets/ws) for the WebSocket transport.
+Options for it can be given via `transportOptions`:
+
+```javascript
+var sock = new SockJS('https://mydomain.com/my_prefix', null, {
+  transportOptions: {
+    websocket: {
+      headers: {Authorization: 'Bearer ...'},  // extra handshake headers
+      ca: [fs.readFileSync('ca.pem')],         // or tls: {ca: ..., rejectUnauthorized: ...}
+      ping: 30                                 // send a ping frame every 30 seconds
+      // any other `ws` client option, e.g. agent, origin, handshakeTimeout
+    }
+  }
+});
+```
+
 # Development and testing
 
 SockJS-client needs [node.js](https://nodejs.org/) for running a test
