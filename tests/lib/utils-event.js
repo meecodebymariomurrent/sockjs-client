@@ -40,7 +40,7 @@ describe('utils/event', function () {
 
   it('uses pagehide when supported', function () {
     var registeredEvents = [];
-    global.addEventListener = function (event, listener) {
+    global.addEventListener = function (event) {
       registeredEvents.push(event);
     };
     global.onpagehide = function () {};
@@ -54,7 +54,7 @@ describe('utils/event', function () {
 
   it('falls back to unload when pagehide unsupported', function () {
     var registeredEvents = [];
-    global.addEventListener = function (event, listener) {
+    global.addEventListener = function (event) {
       registeredEvents.push(event);
     };
     delete global.onpagehide;

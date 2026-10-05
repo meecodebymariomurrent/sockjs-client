@@ -8,6 +8,16 @@ var expect = require('expect.js')
   , utils = require('../../lib/utils/iframe')
   ;
 
+// Browsers only accept real Event objects in dispatchEvent(); the Node
+// `eventsource` package instead emits `event.detail` as the payload.
+function messageEvent(data) {
+  if (typeof window !== 'undefined' && typeof MessageEvent === 'function') {
+    return new MessageEvent('message', { data: data });
+  }
+  return { type: 'message', detail: { data: data } };
+}
+
+
 describe('Receivers', function () {
   describe('jsonp', function () {
     var oldTimeout = JsonpReceiver.timeout;
@@ -297,15 +307,15 @@ describe('Receivers', function () {
       eventSourceReceiver.on('message', function(msg) {
         try {
           expect(msg).to.equal('datadataaa');
-        } catch (e) {}
+        } catch (e) {
+          eventSourceReceiver.abort();
+          return done(e);
+        }
         eventSourceReceiver.abort();
         done();
       });
 
-      eventSourceReceiver.es.dispatchEvent({
-        type: 'message',
-        detail: { data:  'datadataaa' }
-      })
+      eventSourceReceiver.es.dispatchEvent(messageEvent('datadataaa'));
     });
 
     it('correctly escapes characters', function(done) {
@@ -314,15 +324,15 @@ describe('Receivers', function () {
       eventSourceReceiver.on('message', function(msg) {
         try {
           expect(msg).to.equal('{ \\"lastName\\":\\"#@%!~`%^&*()\\" }');
-        } catch (e) {}
+        } catch (e) {
+          eventSourceReceiver.abort();
+          return done(e);
+        }
         eventSourceReceiver.abort();
         done();
       });
 
-      eventSourceReceiver.es.dispatchEvent({
-        type: 'message',
-        detail: { data:  '{ \\"lastName\\":\\"#@%!~`%^&*()\\" }' }
-      })
+      eventSourceReceiver.es.dispatchEvent(messageEvent('{ \\"lastName\\":\\"#@%!~`%^&*()\\" }'));
     });
   });
 });
