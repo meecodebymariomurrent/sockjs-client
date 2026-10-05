@@ -7,6 +7,11 @@ Breaking
    options are no longer supported; pass an `agent` (e.g. an HTTP(S) proxy agent) instead. permessage-deflate
    stays disabled unless `perMessageDeflate` is passed.
 
+Dependencies
+ * Update `eventsource` from `2.0.2` to `5.1.2` (ESM-only, loaded via `require()`), and `debug` to `4.4.3`. Node.js >= 22.12 is now required.
+   When the server answers the EventSource request with an HTTP error status the receiver closes as `permanent`
+   (previously `network`).
+
 Other Changes
  * Added Node.js WebSocket driver tests (headers, TLS/CA, ping, close codes, connection failure).
  * Added ECMAScript build with TypeScript types.

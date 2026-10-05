@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:ea88a896-2306-4211-9dda-88f0804e9833",
+  "serialNumber": "urn:uuid:d4fc7ac1-5d08-4276-a076-0fd0dd7bb607",
   "metadata": {
-    "timestamp": "2026-10-05T13:39:39.823Z",
+    "timestamp": "2026-10-05T14:22:08.621Z",
     "tools": {
       "components": [
         {
@@ -98,8 +98,8 @@
     "component": {
       "type": "application",
       "name": "sockjs-client",
-      "version": "1.6.2",
-      "bom-ref": "sockjs-client@1.6.2",
+      "version": "2.0.0",
+      "bom-ref": "sockjs-client@2.0.0",
       "author": "Bryce Kahle",
       "description": "SockJS-client is a browser JavaScript library that provides a WebSocket-like object.",
       "licenses": [
@@ -110,7 +110,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/sockjs-client@1.6.2?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fsockjs%2Fsockjs-client.git",
+      "purl": "pkg:npm/sockjs-client@2.0.0?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fsockjs%2Fsockjs-client.git",
       "externalReferences": [
         {
           "url": "git+https://github.com/sockjs/sockjs-client.git",
@@ -131,7 +131,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=22"
+          "value": ">=22.12"
         },
         {
           "name": "cdx:npm:package:path",
@@ -144,10 +144,10 @@
     {
       "type": "library",
       "name": "debug",
-      "version": "3.2.7",
-      "bom-ref": "sockjs-client@1.6.2|debug@3.2.7",
-      "author": "TJ Holowaychuk",
-      "description": "small debugging utility",
+      "version": "4.4.3",
+      "bom-ref": "sockjs-client@2.0.0|debug@4.4.3",
+      "author": "Josh Junon",
+      "description": "Lightweight debugging utility for Node.js and the browser",
       "licenses": [
         {
           "license": {
@@ -156,30 +156,40 @@
           }
         }
       ],
-      "purl": "pkg:npm/debug@3.2.7",
+      "purl": "pkg:npm/debug@4.4.3",
       "externalReferences": [
         {
-          "url": "git://github.com/visionmedia/debug.git",
+          "url": "git://github.com/debug-js/debug.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "https://github.com/visionmedia/debug#readme",
+          "url": "https://github.com/debug-js/debug#readme",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/visionmedia/debug/issues",
+          "url": "https://github.com/debug-js/debug/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/debug/-/debug-3.2.7.tgz",
+          "url": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "446c305a7c10be455f6af295b76d8518bc3ec5849dcc04709b4aeee83853540dee994e6165cdbc57790ee2cb6062bcab4e52e9baf808f468a28e5b408cd6dca8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=6.0"
+        },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/debug"
@@ -189,52 +199,51 @@
     {
       "type": "library",
       "name": "eventsource",
-      "version": "2.0.2",
-      "bom-ref": "sockjs-client@1.6.2|eventsource@2.0.2",
-      "author": "Aslak Hellesøy",
-      "description": "W3C compliant EventSource client for Node.js and browser (polyfill)",
+      "version": "5.1.2",
+      "bom-ref": "sockjs-client@2.0.0|eventsource@5.1.2",
+      "author": "Espen Hovlandsdal",
+      "description": "WhatWG/W3C compliant EventSource client for Node.js and browsers",
       "licenses": [
         {
           "license": {
             "id": "MIT",
             "acknowledgement": "declared"
           }
-        },
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared",
-            "url": "http://github.com/EventSource/eventsource/raw/master/LICENSE"
-          }
         }
       ],
-      "purl": "pkg:npm/eventsource@2.0.2",
+      "purl": "pkg:npm/eventsource@5.1.2",
       "externalReferences": [
         {
-          "url": "git://github.com/EventSource/eventsource.git",
+          "url": "git://git@github.com/EventSource/eventsource.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "http://github.com/EventSource/eventsource",
+          "url": "https://github.com/EventSource/eventsource#readme",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "http://github.com/EventSource/eventsource/issues",
+          "url": "https://github.com/EventSource/eventsource/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/eventsource/-/eventsource-2.0.2.tgz",
+          "url": "https://registry.npmjs.org/eventsource/-/eventsource-5.1.2.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5499f0aaaa7e7ce4f75839239d4cb8f59bb2878f3e907d09749029664b25ad1432c77e7321925e258265d3e6be2eb4f38794c5bfa31d9979c10efef551717259"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=12.0.0"
+          "value": ">=22.12.0"
         },
         {
           "name": "cdx:npm:package:path",
@@ -246,7 +255,7 @@
       "type": "library",
       "name": "inherits",
       "version": "2.0.4",
-      "bom-ref": "sockjs-client@1.6.2|inherits@2.0.4",
+      "bom-ref": "sockjs-client@2.0.0|inherits@2.0.4",
       "description": "Browser-friendly inheritance fully compatible with standard node.js inherits()",
       "licenses": [
         {
@@ -276,7 +285,13 @@
         {
           "url": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "93fbc6697e3f6256b75b3c8c0af4d039761e207bea38ab67a8176ecd31e9ce9419cc0b2428c859d8af849c189233dcc64a820578ca572b16b8758799210a9ec1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -290,7 +305,7 @@
       "type": "library",
       "name": "url-parse",
       "version": "1.5.10",
-      "bom-ref": "sockjs-client@1.6.2|url-parse@1.5.10",
+      "bom-ref": "sockjs-client@2.0.0|url-parse@1.5.10",
       "author": "Arnout Kazemier",
       "description": "Small footprint URL parser that works seamlessly across Node.js and browser environments",
       "licenses": [
@@ -321,7 +336,13 @@
         {
           "url": "https://registry.npmjs.org/url-parse/-/url-parse-1.5.10.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5b2a5c7e24617de50ff6fbc5d23eabc3427786b5abc3a899bf7fb6da1ea244c27ff33d538fa5df2cfe03b148b1e4c84c3e75e98870e82b2a19fdb74293004289"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -335,7 +356,7 @@
       "type": "library",
       "name": "ws",
       "version": "8.22.0",
-      "bom-ref": "sockjs-client@1.6.2|ws@8.22.0",
+      "bom-ref": "sockjs-client@2.0.0|ws@8.22.0",
       "author": "Einar Otto Stangvik",
       "description": "Simple to use, blazing fast and thoroughly tested websocket client and server for Node.js",
       "licenses": [
@@ -366,7 +387,13 @@
         {
           "url": "https://registry.npmjs.org/ws/-/ws-8.22.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "61d82073df3bf913b40275ad67fed6abd16d36f72b2f56ff44ed2e77d9968d43e00ebb00030412179d6c9b6866d57a1f6d4ff88e4a4612c2c5b1967153ed433a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -384,7 +411,7 @@
       "type": "library",
       "name": "ms",
       "version": "2.1.3",
-      "bom-ref": "sockjs-client@1.6.2|ms@2.1.3",
+      "bom-ref": "sockjs-client@2.0.0|ms@2.1.3",
       "description": "Tiny millisecond conversion utility",
       "licenses": [
         {
@@ -414,7 +441,13 @@
         {
           "url": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e85973b9b4cb646dc9d9afcd542025784863ceae68c601f268253dc985ef70bb2fa1568726afece715c8ebf5d73fab73ed1f7100eb479d23bfb57b45dd645394"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -426,9 +459,64 @@
     },
     {
       "type": "library",
+      "name": "eventsource-parser",
+      "version": "4.1.1",
+      "bom-ref": "sockjs-client@2.0.0|eventsource-parser@4.1.1",
+      "author": "Espen Hovlandsdal",
+      "description": "Streaming, source-agnostic EventSource/Server-Sent Events parser",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/eventsource-parser@4.1.1",
+      "externalReferences": [
+        {
+          "url": "git+ssh://git@github.com/rexxars/eventsource-parser.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/rexxars/eventsource-parser#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/rexxars/eventsource-parser/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cda58da9e48b7b2cc4000b7643a6830510d193f5673e6b0aaaf4e8c86befe9a6a1bcbbfbd40e09c3b8c6f771dc91fd75cd7bab6ea82c7dfbe94a028fa1e53543"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=22.12"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/eventsource-parser"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "querystringify",
       "version": "2.2.0",
-      "bom-ref": "sockjs-client@1.6.2|querystringify@2.2.0",
+      "bom-ref": "sockjs-client@2.0.0|querystringify@2.2.0",
       "author": "Arnout Kazemier",
       "description": "Querystringify - Small, simple but powerful query string parser.",
       "licenses": [
@@ -459,7 +547,13 @@
         {
           "url": "https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "148aa08f6114bd36bb479d2ed2b1acc937edce3626bff6b784edf8e5b64daea69b36a8ed8220cc826a389a452377e9f3539a05ddd0a52aa1483d42b26d4caaa1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -473,7 +567,7 @@
       "type": "library",
       "name": "requires-port",
       "version": "1.0.0",
-      "bom-ref": "sockjs-client@1.6.2|requires-port@1.0.0",
+      "bom-ref": "sockjs-client@2.0.0|requires-port@1.0.0",
       "author": "Arnout Kazemier",
       "description": "Check if a protocol requires a certain port number to be added to an URL.",
       "licenses": [
@@ -504,7 +598,13 @@
         {
           "url": "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "2a280e087728714dd7383271b2ef22fe3f13f6dcd3e1a74789e730391450d19645729eda8705ee454d66fb2b8ef740b9654c867867e87070c8d783372f7c8301"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -517,45 +617,51 @@
   ],
   "dependencies": [
     {
-      "ref": "sockjs-client@1.6.2",
+      "ref": "sockjs-client@2.0.0",
       "dependsOn": [
-        "sockjs-client@1.6.2|debug@3.2.7",
-        "sockjs-client@1.6.2|eventsource@2.0.2",
-        "sockjs-client@1.6.2|inherits@2.0.4",
-        "sockjs-client@1.6.2|url-parse@1.5.10",
-        "sockjs-client@1.6.2|ws@8.22.0"
+        "sockjs-client@2.0.0|debug@4.4.3",
+        "sockjs-client@2.0.0|eventsource@5.1.2",
+        "sockjs-client@2.0.0|inherits@2.0.4",
+        "sockjs-client@2.0.0|url-parse@1.5.10",
+        "sockjs-client@2.0.0|ws@8.22.0"
       ]
     },
     {
-      "ref": "sockjs-client@1.6.2|debug@3.2.7",
+      "ref": "sockjs-client@2.0.0|debug@4.4.3",
       "dependsOn": [
-        "sockjs-client@1.6.2|ms@2.1.3"
+        "sockjs-client@2.0.0|ms@2.1.3"
       ]
     },
     {
-      "ref": "sockjs-client@1.6.2|eventsource@2.0.2"
-    },
-    {
-      "ref": "sockjs-client@1.6.2|inherits@2.0.4"
-    },
-    {
-      "ref": "sockjs-client@1.6.2|url-parse@1.5.10",
+      "ref": "sockjs-client@2.0.0|eventsource@5.1.2",
       "dependsOn": [
-        "sockjs-client@1.6.2|querystringify@2.2.0",
-        "sockjs-client@1.6.2|requires-port@1.0.0"
+        "sockjs-client@2.0.0|eventsource-parser@4.1.1"
       ]
     },
     {
-      "ref": "sockjs-client@1.6.2|ws@8.22.0"
+      "ref": "sockjs-client@2.0.0|inherits@2.0.4"
     },
     {
-      "ref": "sockjs-client@1.6.2|ms@2.1.3"
+      "ref": "sockjs-client@2.0.0|url-parse@1.5.10",
+      "dependsOn": [
+        "sockjs-client@2.0.0|querystringify@2.2.0",
+        "sockjs-client@2.0.0|requires-port@1.0.0"
+      ]
     },
     {
-      "ref": "sockjs-client@1.6.2|querystringify@2.2.0"
+      "ref": "sockjs-client@2.0.0|ws@8.22.0"
     },
     {
-      "ref": "sockjs-client@1.6.2|requires-port@1.0.0"
+      "ref": "sockjs-client@2.0.0|ms@2.1.3"
+    },
+    {
+      "ref": "sockjs-client@2.0.0|eventsource-parser@4.1.1"
+    },
+    {
+      "ref": "sockjs-client@2.0.0|querystringify@2.2.0"
+    },
+    {
+      "ref": "sockjs-client@2.0.0|requires-port@1.0.0"
     }
   ]
 }

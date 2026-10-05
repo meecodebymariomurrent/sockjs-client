@@ -1693,7 +1693,7 @@ var inherits = require('inherits')
   , AjaxBasedTransport = require('./lib/ajax-based')
   , EventSourceReceiver = require('./receiver/eventsource')
   , XHRCorsObject = require('./sender/xhr-cors')
-  , EventSourceDriver = require('eventsource')
+  , EventSourceDriver = require('./driver/eventsource')
   ;
 
 function EventSourceTransport(transUrl) {
@@ -1715,7 +1715,7 @@ EventSourceTransport.roundTrips = 2;
 
 module.exports = EventSourceTransport;
 
-},{"./lib/ajax-based":24,"./receiver/eventsource":29,"./sender/xhr-cors":35,"eventsource":18,"inherits":56}],21:[function(require,module,exports){
+},{"./driver/eventsource":18,"./lib/ajax-based":24,"./receiver/eventsource":29,"./sender/xhr-cors":35,"inherits":56}],21:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -2228,7 +2228,7 @@ module.exports = SenderReceiver;
 
 var inherits = require('inherits')
   , EventEmitter = require('events').EventEmitter
-  , EventSourceDriver = require('eventsource')
+  , EventSourceDriver = require('../driver/eventsource')
   ;
 
 var debug = function() {};
@@ -2294,7 +2294,7 @@ module.exports = EventSourceReceiver;
 
 }).call(this)}).call(this,{ env: {} })
 
-},{"debug":54,"events":3,"eventsource":18,"inherits":56}],30:[function(require,module,exports){
+},{"../driver/eventsource":18,"debug":54,"events":3,"inherits":56}],30:[function(require,module,exports){
 (function (process,global){(function (){
 'use strict';
 

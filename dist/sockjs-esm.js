@@ -1218,7 +1218,7 @@ var require_sockjs = __commonJS({
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
       }, {}], 20: [function(require2, module3, exports3) {
         "use strict";
-        var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), EventSourceReceiver = require2("./receiver/eventsource"), XHRCorsObject = require2("./sender/xhr-cors"), EventSourceDriver = require2("eventsource");
+        var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), EventSourceReceiver = require2("./receiver/eventsource"), XHRCorsObject = require2("./sender/xhr-cors"), EventSourceDriver = require2("./driver/eventsource");
         function EventSourceTransport(transUrl) {
           if (!EventSourceTransport.enabled()) {
             throw new Error("Transport created when disabled");
@@ -1232,7 +1232,7 @@ var require_sockjs = __commonJS({
         EventSourceTransport.transportName = "eventsource";
         EventSourceTransport.roundTrips = 2;
         module3.exports = EventSourceTransport;
-      }, { "./lib/ajax-based": 24, "./receiver/eventsource": 29, "./sender/xhr-cors": 35, "eventsource": 18, "inherits": 56 }], 21: [function(require2, module3, exports3) {
+      }, { "./driver/eventsource": 18, "./lib/ajax-based": 24, "./receiver/eventsource": 29, "./sender/xhr-cors": 35, "inherits": 56 }], 21: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), HtmlfileReceiver = require2("./receiver/htmlfile"), XHRLocalObject = require2("./sender/xhr-local"), AjaxBasedTransport = require2("./lib/ajax-based");
         function HtmlFileTransport(transUrl) {
@@ -1616,7 +1616,7 @@ var require_sockjs = __commonJS({
         (function(process) {
           (function() {
             "use strict";
-            var inherits = require2("inherits"), EventEmitter = require2("events").EventEmitter, EventSourceDriver = require2("eventsource");
+            var inherits = require2("inherits"), EventEmitter = require2("events").EventEmitter, EventSourceDriver = require2("../driver/eventsource");
             var debug = function() {
             };
             if (process.env.NODE_ENV !== "production") {
@@ -1667,7 +1667,7 @@ var require_sockjs = __commonJS({
             module3.exports = EventSourceReceiver;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54, "events": 3, "eventsource": 18, "inherits": 56 }], 30: [function(require2, module3, exports3) {
+      }, { "../driver/eventsource": 18, "debug": 54, "events": 3, "inherits": 56 }], 30: [function(require2, module3, exports3) {
         (function(process, global2) {
           (function() {
             "use strict";

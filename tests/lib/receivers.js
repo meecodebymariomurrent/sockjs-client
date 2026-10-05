@@ -8,15 +8,11 @@ var expect = require('expect.js')
   , utils = require('../../lib/utils/iframe')
   ;
 
-// Browsers only accept real Event objects in dispatchEvent(); the Node
-// `eventsource` package instead emits `event.detail` as the payload.
+// Both browsers and the Node `eventsource` package (an EventTarget since
+// v3) require real Event objects in dispatchEvent().
 function messageEvent(data) {
-  if (typeof window !== 'undefined' && typeof MessageEvent === 'function') {
-    return new MessageEvent('message', { data: data });
-  }
-  return { type: 'message', detail: { data: data } };
+  return new MessageEvent('message', { data: data });
 }
-
 
 describe('Receivers', function () {
   describe('jsonp', function () {
@@ -302,7 +298,7 @@ describe('Receivers', function () {
 
   describe('eventsource', function () {
     it('receives data', function(done) {
-      var eventSourceReceiver = new EventSourceReceiver('test');
+      var eventSourceReceiver = new EventSourceReceiver('http://127.0.0.1:1/test');
 
       eventSourceReceiver.on('message', function(msg) {
         try {
@@ -319,7 +315,7 @@ describe('Receivers', function () {
     });
 
     it('correctly escapes characters', function(done) {
-      var eventSourceReceiver = new EventSourceReceiver('test');
+      var eventSourceReceiver = new EventSourceReceiver('http://127.0.0.1:1/test');
 
       eventSourceReceiver.on('message', function(msg) {
         try {
