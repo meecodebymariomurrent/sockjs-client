@@ -1,6 +1,5 @@
 'use strict';
 var expect = require('expect.js')
-  , iframeUtils = require('../../lib/utils/iframe')
   , testUtils = require('./test-utils')
   , debug = require('debug')('sockjs-client:tests:echo')
   ;
@@ -116,79 +115,3 @@ module.exports.echoUtfEncoding = function echoUtfEncoding(url, transport) {
   it('echo utf encoding killer message', echoFactory(transport, [message.join('')], url + '/echo'));
 };
 
-module.exports.echoFromChild = function echoFromChild(url, transport) {
-  if (!iframeUtils.iframeEnabled) {
-    it('echo from child [unsupported]');
-    return;
-  }
-
-  it('echo from child', function (done) {
-    this.timeout(10000);
-
-    var test = this.runnable();
-    var title = test.fullTitle();
-    debug('start', title);
-    var hook = testUtils.createIframe('/sockjs-test/sockjs-in-parent.html');
-    var sjs = testUtils.newSockJs(url + '/echo', transport);
-    var code = 'hook.sjs.send("a"); hook.onsend();';
-    var hookReady, sockJsReady, timeout, i = 0;
-
-    hook.open = function() {
-      debug('hook open');
-      hook.iobj.loaded();
-      i++;
-      hookReady = true;
-      hook.sjs = sjs;
-      if (sockJsReady) {
-        hook.callback(code);
-      }
-    };
-    hook.onsend = function () {
-      debug('hook onsend');
-      timeout = setTimeout(function() {
-        done(new Error('echo timeout'));
-        sjs.close();
-        debug('end', title);
-      }, 1000);
-    };
-
-    sjs.onopen = function() {
-      debug('hook sjs open');
-      hook.iobj.loaded();
-      i++;
-      sockJsReady = true;
-      if (hookReady) {
-        hook.callback(code);
-      }
-    };
-    sjs.onmessage = function(e) {
-      debug('hook sjs message, e.data');
-      clearTimeout(timeout);
-      try {
-        expect(e.data).to.equal('a');
-        expect(i).to.equal(2);
-      } catch (err) {
-        done(err);
-      } finally {
-        hook.iobj.cleanup();
-        hook.del();
-        sjs.close();
-      }
-    };
-    sjs.onclose = function(e) {
-      if (test.timedOut || test.duration) {
-        return;
-      }
-
-      try {
-        expect(e.code).to.equal(1000);
-      } catch (err) {
-        done(e);
-        return;
-      }
-      debug('hook sjs close');
-      done();
-      debug('end', title);
-    };
-  });
-};

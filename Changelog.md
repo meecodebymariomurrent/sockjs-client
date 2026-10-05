@@ -1,6 +1,11 @@
 2.0.0
 ==
 Breaking
+ * Remove the legacy browser transports and their support code: `xdr-streaming`, `xdr-polling`, `htmlfile`,
+   `jsonp-polling`, `iframe-eventsource`, `iframe-htmlfile` and `iframe-xhr-polling`, plus the ES5 shims, iframe
+   bootstrap and `XDomainRequest` support. Only `websocket`, `xhr-streaming`, `eventsource` and `xhr-polling` remain.
+   Internet Explorer and very old Opera/Konqueror are no longer supported; use 1.x for them. Servers that advertise
+   the removed transports keep working, the client just never selects them.
  * Require Node.js >= 22 (active/maintenance LTS). CI now tests Node 22 and 24; Node 18 and 20 are end of life.
  * Replace `faye-websocket` with `ws` as the Node.js WebSocket client. The `transportOptions.websocket` options
    `headers`, `tls`, `ca`, `ping` and `maxLength` keep working. The faye-only `proxy`, `net` and `extensions`

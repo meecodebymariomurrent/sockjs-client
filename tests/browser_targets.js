@@ -13,13 +13,6 @@ module.exports = {
     os: 'Windows',
     os_version: '10'
   },
-  bs_ie_11_windows: {
-    base: 'BrowserStack',
-    browser: 'ie',
-    browser_version: '11.0',
-    os: 'Windows',
-    os_version: '10'
-  },
   // bs_ie_10_windows: {
   //   base: 'BrowserStack',
   //   browser: 'ie',

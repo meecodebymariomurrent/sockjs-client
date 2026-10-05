@@ -4,7 +4,6 @@ var expect = require('expect.js')
   , testUtils = require('./test-utils')
   , XhrLocal = require('../../lib/transport/sender/xhr-local')
   , XhrCors = require('../../lib/transport/sender/xhr-cors')
-  , Xdr = require('../../lib/transport/sender/xdr')
   ;
 
 function ajaxSimple (Obj) {
@@ -91,21 +90,6 @@ function wrongUrl(Obj, url, statuses) {
   });
 }
 
-function wrongPort (Obj) {
-  var badUrl;
-  if (global.location) {
-    badUrl = global.location.protocol + '//' + global.location.hostname + ':';
-  } else {
-    badUrl = 'http://localhost:';
-  }
-
-  var ports = [25, 8999, 65300];
-  ports.forEach(function (port) {
-    // Sauce Labs/Selenium returns 400 when it can't connect to the port
-    wrongUrl(Obj, badUrl + port + '/wrong_url_indeed.txt', [0, 400]);
-  });
-}
-
 describe('Senders', function () {
   describe('xhr-local', function () {
     ajaxSimple(XhrLocal);
@@ -114,16 +98,5 @@ describe('Senders', function () {
     // BUT info-receiver has a timeout so they will never not-return
     // wrongPort(XhrLocal);
     wrongUrl(XhrLocal, testUtils.getSameOriginUrl() + '/wrong_url_indeed.txt', [0, 404]);
-  });
-
-  describe('xdr', function () {
-    if (!Xdr.enabled) {
-      it('[unsupported]');
-      return;
-    }
-    ajaxSimple(Xdr);
-    ajaxStreaming(Xdr);
-    wrongPort(Xdr);
-    wrongUrl(Xdr, testUtils.getSameOriginUrl() + '/wrong_url_indeed.txt', [0, 400]);
   });
 });

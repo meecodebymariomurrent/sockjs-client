@@ -70,7 +70,7 @@ var require_sockjs = __commonJS({
             }
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./main": 14, "./transport-list": 16 }], 2: [function(require2, module3, exports3) {
+      }, { "./main": 10, "./transport-list": 11 }], 2: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), Event = require2("./event");
         function CloseEvent() {
@@ -82,7 +82,7 @@ var require_sockjs = __commonJS({
         }
         inherits(CloseEvent, Event);
         module3.exports = CloseEvent;
-      }, { "./event": 4, "inherits": 56 }], 3: [function(require2, module3, exports3) {
+      }, { "./event": 4, "inherits": 39 }], 3: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), EventTarget = require2("./eventtarget");
         function EventEmitter() {
@@ -125,7 +125,7 @@ var require_sockjs = __commonJS({
         EventEmitter.prototype.on = EventEmitter.prototype.addListener = EventTarget.prototype.addEventListener;
         EventEmitter.prototype.removeListener = EventTarget.prototype.removeEventListener;
         module3.exports.EventEmitter = EventEmitter;
-      }, { "./eventtarget": 5, "inherits": 56 }], 4: [function(require2, module3, exports3) {
+      }, { "./eventtarget": 5, "inherits": 39 }], 4: [function(require2, module3, exports3) {
         "use strict";
         function Event(eventType) {
           this.type = eventType;
@@ -200,110 +200,7 @@ var require_sockjs = __commonJS({
         }
         inherits(TransportMessageEvent, Event);
         module3.exports = TransportMessageEvent;
-      }, { "./event": 4, "inherits": 56 }], 7: [function(require2, module3, exports3) {
-        "use strict";
-        var iframeUtils = require2("./utils/iframe");
-        function FacadeJS(transport) {
-          this._transport = transport;
-          transport.on("message", this._transportMessage.bind(this));
-          transport.on("close", this._transportClose.bind(this));
-        }
-        FacadeJS.prototype._transportClose = function(code, reason) {
-          iframeUtils.postMessage("c", JSON.stringify([code, reason]));
-        };
-        FacadeJS.prototype._transportMessage = function(frame) {
-          iframeUtils.postMessage("t", frame);
-        };
-        FacadeJS.prototype._send = function(data) {
-          this._transport.send(data);
-        };
-        FacadeJS.prototype._close = function() {
-          this._transport.close();
-          this._transport.removeAllListeners();
-        };
-        module3.exports = FacadeJS;
-      }, { "./utils/iframe": 47 }], 8: [function(require2, module3, exports3) {
-        (function(process) {
-          (function() {
-            "use strict";
-            var urlUtils = require2("./utils/url"), eventUtils = require2("./utils/event"), FacadeJS = require2("./facade"), InfoIframeReceiver = require2("./info-iframe-receiver"), iframeUtils = require2("./utils/iframe"), loc = require2("./location");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:iframe-bootstrap");
-            }
-            module3.exports = function(SockJS, availableTransports) {
-              var transportMap = {};
-              availableTransports.forEach(function(at) {
-                if (at.facadeTransport) {
-                  transportMap[at.facadeTransport.transportName] = at.facadeTransport;
-                }
-              });
-              transportMap[InfoIframeReceiver.transportName] = InfoIframeReceiver;
-              var parentOrigin;
-              SockJS.bootstrap_iframe = function() {
-                var facade;
-                iframeUtils.currentWindowId = loc.hash.slice(1);
-                var onMessage = function(e) {
-                  if (e.source !== parent) {
-                    return;
-                  }
-                  if (typeof parentOrigin === "undefined") {
-                    parentOrigin = e.origin;
-                  }
-                  if (e.origin !== parentOrigin) {
-                    return;
-                  }
-                  var iframeMessage;
-                  try {
-                    iframeMessage = JSON.parse(e.data);
-                  } catch (ignored) {
-                    debug("bad json", e.data);
-                    return;
-                  }
-                  if (iframeMessage.windowId !== iframeUtils.currentWindowId) {
-                    return;
-                  }
-                  switch (iframeMessage.type) {
-                    case "s":
-                      var p;
-                      try {
-                        p = JSON.parse(iframeMessage.data);
-                      } catch (ignored) {
-                        debug("bad json", iframeMessage.data);
-                        break;
-                      }
-                      var version = p[0];
-                      var transport = p[1];
-                      var transUrl = p[2];
-                      var baseUrl = p[3];
-                      debug(version, transport, transUrl, baseUrl);
-                      if (version !== SockJS.version) {
-                        throw new Error('Incompatible SockJS! Main site uses: "' + version + '", the iframe: "' + SockJS.version + '".');
-                      }
-                      if (!urlUtils.isOriginEqual(transUrl, loc.href) || !urlUtils.isOriginEqual(baseUrl, loc.href)) {
-                        throw new Error("Can't connect to different domain from within an iframe. (" + loc.href + ", " + transUrl + ", " + baseUrl + ")");
-                      }
-                      facade = new FacadeJS(new transportMap[transport](transUrl, baseUrl));
-                      break;
-                    case "m":
-                      facade._send(iframeMessage.data);
-                      break;
-                    case "c":
-                      if (facade) {
-                        facade._close();
-                      }
-                      facade = null;
-                      break;
-                  }
-                };
-                eventUtils.attachEvent("message", onMessage);
-                iframeUtils.postMessage("s");
-              };
-            };
-          }).call(this);
-        }).call(this, { env: {} });
-      }, { "./facade": 7, "./info-iframe-receiver": 10, "./location": 13, "./utils/event": 46, "./utils/iframe": 47, "./utils/url": 52, "debug": 54 }], 9: [function(require2, module3, exports3) {
+      }, { "./event": 4, "inherits": 39 }], 7: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -345,89 +242,11 @@ var require_sockjs = __commonJS({
             module3.exports = InfoAjax;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "./utils/object": 49, "debug": 54, "events": 3, "inherits": 56 }], 10: [function(require2, module3, exports3) {
-        "use strict";
-        var inherits = require2("inherits"), EventEmitter = require2("events").EventEmitter, XHRLocalObject = require2("./transport/sender/xhr-local"), InfoAjax = require2("./info-ajax");
-        function InfoReceiverIframe(transUrl) {
-          var self2 = this;
-          EventEmitter.call(this);
-          this.ir = new InfoAjax(transUrl, XHRLocalObject);
-          this.ir.once("finish", function(info, rtt) {
-            self2.ir = null;
-            self2.emit("message", JSON.stringify([info, rtt]));
-          });
-        }
-        inherits(InfoReceiverIframe, EventEmitter);
-        InfoReceiverIframe.transportName = "iframe-info-receiver";
-        InfoReceiverIframe.prototype.close = function() {
-          if (this.ir) {
-            this.ir.close();
-            this.ir = null;
-          }
-          this.removeAllListeners();
-        };
-        module3.exports = InfoReceiverIframe;
-      }, { "./info-ajax": 9, "./transport/sender/xhr-local": 37, "events": 3, "inherits": 56 }], 11: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var EventEmitter = require2("events").EventEmitter, inherits = require2("inherits"), utils = require2("./utils/event"), IframeTransport = require2("./transport/iframe"), InfoReceiverIframe = require2("./info-iframe-receiver");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:info-iframe");
-            }
-            function InfoIframe(baseUrl, url) {
-              var self2 = this;
-              EventEmitter.call(this);
-              var go = function() {
-                var ifr = self2.ifr = new IframeTransport(InfoReceiverIframe.transportName, url, baseUrl);
-                ifr.once("message", function(msg) {
-                  if (msg) {
-                    var d;
-                    try {
-                      d = JSON.parse(msg);
-                    } catch (e) {
-                      debug("bad json", msg);
-                      self2.emit("finish");
-                      self2.close();
-                      return;
-                    }
-                    var info = d[0], rtt = d[1];
-                    self2.emit("finish", info, rtt);
-                  }
-                  self2.close();
-                });
-                ifr.once("close", function() {
-                  self2.emit("finish");
-                  self2.close();
-                });
-              };
-              if (!global2.document.body) {
-                utils.attachEvent("load", go);
-              } else {
-                go();
-              }
-            }
-            inherits(InfoIframe, EventEmitter);
-            InfoIframe.enabled = function() {
-              return IframeTransport.enabled();
-            };
-            InfoIframe.prototype.close = function() {
-              if (this.ifr) {
-                this.ifr.close();
-              }
-              this.removeAllListeners();
-              this.ifr = null;
-            };
-            module3.exports = InfoIframe;
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./info-iframe-receiver": 10, "./transport/iframe": 22, "./utils/event": 46, "debug": 54, "events": 3, "inherits": 56 }], 12: [function(require2, module3, exports3) {
+      }, { "./utils/object": 32, "debug": 37, "events": 3, "inherits": 39 }], 8: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
-            var EventEmitter = require2("events").EventEmitter, inherits = require2("inherits"), urlUtils = require2("./utils/url"), XDR = require2("./transport/sender/xdr"), XHRCors = require2("./transport/sender/xhr-cors"), XHRLocal = require2("./transport/sender/xhr-local"), XHRFake = require2("./transport/sender/xhr-fake"), InfoIframe = require2("./info-iframe"), InfoAjax = require2("./info-ajax");
+            var EventEmitter = require2("events").EventEmitter, inherits = require2("inherits"), urlUtils = require2("./utils/url"), XHRCors = require2("./transport/sender/xhr-cors"), XHRLocal = require2("./transport/sender/xhr-local"), InfoAjax = require2("./info-ajax");
             var debug = function() {
             };
             if (process.env.NODE_ENV !== "production") {
@@ -446,16 +265,7 @@ var require_sockjs = __commonJS({
               if (urlInfo.sameOrigin) {
                 return new InfoAjax(url, XHRLocal);
               }
-              if (XHRCors.enabled) {
-                return new InfoAjax(url, XHRCors);
-              }
-              if (XDR.enabled && urlInfo.sameScheme) {
-                return new InfoAjax(url, XDR);
-              }
-              if (InfoIframe.enabled()) {
-                return new InfoIframe(baseUrl, url);
-              }
-              return new InfoAjax(url, XHRFake);
+              return new InfoAjax(url, XHRCors);
             };
             InfoReceiver.prototype.doXhr = function(baseUrl, urlInfo) {
               var self2 = this, url = urlUtils.addPath(baseUrl, "/info");
@@ -490,7 +300,7 @@ var require_sockjs = __commonJS({
             module3.exports = InfoReceiver;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "./info-ajax": 9, "./info-iframe": 11, "./transport/sender/xdr": 34, "./transport/sender/xhr-cors": 35, "./transport/sender/xhr-fake": 36, "./transport/sender/xhr-local": 37, "./utils/url": 52, "debug": 54, "events": 3, "inherits": 56 }], 13: [function(require2, module3, exports3) {
+      }, { "./info-ajax": 7, "./transport/sender/xhr-cors": 22, "./transport/sender/xhr-local": 23, "./utils/url": 35, "debug": 37, "events": 3, "inherits": 39 }], 9: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -504,11 +314,10 @@ var require_sockjs = __commonJS({
             };
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 14: [function(require2, module3, exports3) {
+      }, {}], 10: [function(require2, module3, exports3) {
         (function(process, global2) {
           (function() {
             "use strict";
-            require2("./shims");
             var URL = require2("url-parse"), inherits = require2("inherits"), random = require2("./utils/random"), escape = require2("./utils/escape"), urlUtils = require2("./utils/url"), eventUtils = require2("./utils/event"), transport = require2("./utils/transport"), objectUtils = require2("./utils/object"), browser = require2("./utils/browser"), log = require2("./utils/log"), Event = require2("./event/event"), EventTarget = require2("./event/eventtarget"), loc = require2("./location"), CloseEvent = require2("./event/close"), TransportMessageEvent = require2("./event/trans-message"), InfoReceiver = require2("./info-receiver");
             var debug = function() {
             };
@@ -783,269 +592,20 @@ var require_sockjs = __commonJS({
             };
             module3.exports = function(availableTransports) {
               transports = transport(availableTransports);
-              require2("./iframe-bootstrap")(SockJS, availableTransports);
               return SockJS;
             };
           }).call(this);
         }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./event/close": 2, "./event/event": 4, "./event/eventtarget": 5, "./event/trans-message": 6, "./iframe-bootstrap": 8, "./info-receiver": 12, "./location": 13, "./shims": 15, "./utils/browser": 44, "./utils/escape": 45, "./utils/event": 46, "./utils/log": 48, "./utils/object": 49, "./utils/random": 50, "./utils/transport": 51, "./utils/url": 52, "./version": 53, "debug": 54, "inherits": 56, "url-parse": 60 }], 15: [function(require2, module3, exports3) {
-        "use strict";
-        var ArrayPrototype = Array.prototype;
-        var ObjectPrototype = Object.prototype;
-        var FunctionPrototype = Function.prototype;
-        var StringPrototype = String.prototype;
-        var array_slice = ArrayPrototype.slice;
-        var _toString = ObjectPrototype.toString;
-        var isFunction = function(val) {
-          return ObjectPrototype.toString.call(val) === "[object Function]";
-        };
-        var isArray = function isArray2(obj) {
-          return _toString.call(obj) === "[object Array]";
-        };
-        var isString = function isString2(obj) {
-          return _toString.call(obj) === "[object String]";
-        };
-        var supportsDescriptors = Object.defineProperty && (function() {
-          try {
-            Object.defineProperty({}, "x", {});
-            return true;
-          } catch (e) {
-            return false;
-          }
-        })();
-        var defineProperty;
-        if (supportsDescriptors) {
-          defineProperty = function(object, name, method, forceAssign) {
-            if (!forceAssign && name in object) {
-              return;
-            }
-            Object.defineProperty(object, name, {
-              configurable: true,
-              enumerable: false,
-              writable: true,
-              value: method
-            });
-          };
-        } else {
-          defineProperty = function(object, name, method, forceAssign) {
-            if (!forceAssign && name in object) {
-              return;
-            }
-            object[name] = method;
-          };
-        }
-        var defineProperties = function(object, map, forceAssign) {
-          for (var name in map) {
-            if (ObjectPrototype.hasOwnProperty.call(map, name)) {
-              defineProperty(object, name, map[name], forceAssign);
-            }
-          }
-        };
-        var toObject = function(o) {
-          if (o == null) {
-            throw new TypeError("can't convert " + o + " to object");
-          }
-          return Object(o);
-        };
-        function toInteger(num) {
-          var n = +num;
-          if (n !== n) {
-            n = 0;
-          } else if (n !== 0 && n !== 1 / 0 && n !== -(1 / 0)) {
-            n = (n > 0 || -1) * Math.floor(Math.abs(n));
-          }
-          return n;
-        }
-        function ToUint32(x) {
-          return x >>> 0;
-        }
-        function Empty() {
-        }
-        defineProperties(FunctionPrototype, {
-          bind: function bind(that) {
-            var target = this;
-            if (!isFunction(target)) {
-              throw new TypeError("Function.prototype.bind called on incompatible " + target);
-            }
-            var args = array_slice.call(arguments, 1);
-            var binder = function() {
-              if (this instanceof bound) {
-                var result = target.apply(
-                  this,
-                  args.concat(array_slice.call(arguments))
-                );
-                if (Object(result) === result) {
-                  return result;
-                }
-                return this;
-              } else {
-                return target.apply(
-                  that,
-                  args.concat(array_slice.call(arguments))
-                );
-              }
-            };
-            var boundLength = Math.max(0, target.length - args.length);
-            var boundArgs = [];
-            for (var i = 0; i < boundLength; i++) {
-              boundArgs.push("$" + i);
-            }
-            var bound = Function("binder", "return function (" + boundArgs.join(",") + "){ return binder.apply(this, arguments); }")(binder);
-            if (target.prototype) {
-              Empty.prototype = target.prototype;
-              bound.prototype = new Empty();
-              Empty.prototype = null;
-            }
-            return bound;
-          }
-        });
-        defineProperties(Array, { isArray });
-        var boxedString = Object("a");
-        var splitString = boxedString[0] !== "a" || !(0 in boxedString);
-        var properlyBoxesContext = function properlyBoxed(method) {
-          var properlyBoxesNonStrict = true;
-          var properlyBoxesStrict = true;
-          if (method) {
-            method.call("foo", function(_, __, context) {
-              if (typeof context !== "object") {
-                properlyBoxesNonStrict = false;
-              }
-            });
-            method.call([1], function() {
-              "use strict";
-              properlyBoxesStrict = typeof this === "string";
-            }, "x");
-          }
-          return !!method && properlyBoxesNonStrict && properlyBoxesStrict;
-        };
-        defineProperties(ArrayPrototype, {
-          forEach: function forEach(fun) {
-            var object = toObject(this), self2 = splitString && isString(this) ? this.split("") : object, thisp = arguments[1], i = -1, length = self2.length >>> 0;
-            if (!isFunction(fun)) {
-              throw new TypeError();
-            }
-            while (++i < length) {
-              if (i in self2) {
-                fun.call(thisp, self2[i], i, object);
-              }
-            }
-          }
-        }, !properlyBoxesContext(ArrayPrototype.forEach));
-        var hasFirefox2IndexOfBug = Array.prototype.indexOf && [0, 1].indexOf(1, 2) !== -1;
-        defineProperties(ArrayPrototype, {
-          indexOf: function indexOf(sought) {
-            var self2 = splitString && isString(this) ? this.split("") : toObject(this), length = self2.length >>> 0;
-            if (!length) {
-              return -1;
-            }
-            var i = 0;
-            if (arguments.length > 1) {
-              i = toInteger(arguments[1]);
-            }
-            i = i >= 0 ? i : Math.max(0, length + i);
-            for (; i < length; i++) {
-              if (i in self2 && self2[i] === sought) {
-                return i;
-              }
-            }
-            return -1;
-          }
-        }, hasFirefox2IndexOfBug);
-        var string_split = StringPrototype.split;
-        if ("ab".split(/(?:ab)*/).length !== 2 || ".".split(/(.?)(.?)/).length !== 4 || "tesst".split(/(s)*/)[1] === "t" || "test".split(/(?:)/, -1).length !== 4 || "".split(/.?/).length || ".".split(/()()/).length > 1) {
-          (function() {
-            var compliantExecNpcg = /()??/.exec("")[1] === void 0;
-            StringPrototype.split = function(separator, limit) {
-              var string = this;
-              if (separator === void 0 && limit === 0) {
-                return [];
-              }
-              if (_toString.call(separator) !== "[object RegExp]") {
-                return string_split.call(this, separator, limit);
-              }
-              var output = [], flags = (separator.ignoreCase ? "i" : "") + (separator.multiline ? "m" : "") + (separator.extended ? "x" : "") + // Proposed for ES6
-              (separator.sticky ? "y" : ""), lastLastIndex = 0, separator2, match, lastIndex, lastLength;
-              separator = new RegExp(separator.source, flags + "g");
-              string += "";
-              if (!compliantExecNpcg) {
-                separator2 = new RegExp("^" + separator.source + "$(?!\\s)", flags);
-              }
-              limit = limit === void 0 ? -1 >>> 0 : (
-                // Math.pow(2, 32) - 1
-                ToUint32(limit)
-              );
-              while (match = separator.exec(string)) {
-                lastIndex = match.index + match[0].length;
-                if (lastIndex > lastLastIndex) {
-                  output.push(string.slice(lastLastIndex, match.index));
-                  if (!compliantExecNpcg && match.length > 1) {
-                    match[0].replace(separator2, function() {
-                      for (var i = 1; i < arguments.length - 2; i++) {
-                        if (arguments[i] === void 0) {
-                          match[i] = void 0;
-                        }
-                      }
-                    });
-                  }
-                  if (match.length > 1 && match.index < string.length) {
-                    ArrayPrototype.push.apply(output, match.slice(1));
-                  }
-                  lastLength = match[0].length;
-                  lastLastIndex = lastIndex;
-                  if (output.length >= limit) {
-                    break;
-                  }
-                }
-                if (separator.lastIndex === match.index) {
-                  separator.lastIndex++;
-                }
-              }
-              if (lastLastIndex === string.length) {
-                if (lastLength || !separator.test("")) {
-                  output.push("");
-                }
-              } else {
-                output.push(string.slice(lastLastIndex));
-              }
-              return output.length > limit ? output.slice(0, limit) : output;
-            };
-          })();
-        } else if ("0".split(void 0, 0).length) {
-          StringPrototype.split = function split(separator, limit) {
-            if (separator === void 0 && limit === 0) {
-              return [];
-            }
-            return string_split.call(this, separator, limit);
-          };
-        }
-        var string_substr = StringPrototype.substr;
-        var hasNegativeSubstrBug = "".substr && "0b".substr(-1) !== "b";
-        defineProperties(StringPrototype, {
-          substr: function substr(start, length) {
-            return string_substr.call(
-              this,
-              start < 0 ? (start = this.length + start) < 0 ? 0 : start : start,
-              length
-            );
-          }
-        }, hasNegativeSubstrBug);
-      }, {}], 16: [function(require2, module3, exports3) {
+      }, { "./event/close": 2, "./event/event": 4, "./event/eventtarget": 5, "./event/trans-message": 6, "./info-receiver": 8, "./location": 9, "./utils/browser": 28, "./utils/escape": 29, "./utils/event": 30, "./utils/log": 31, "./utils/object": 32, "./utils/random": 33, "./utils/transport": 34, "./utils/url": 35, "./version": 36, "debug": 37, "inherits": 39, "url-parse": 43 }], 11: [function(require2, module3, exports3) {
         "use strict";
         module3.exports = [
           // streaming transports
           require2("./transport/websocket"),
           require2("./transport/xhr-streaming"),
-          require2("./transport/xdr-streaming"),
           require2("./transport/eventsource"),
-          require2("./transport/lib/iframe-wrap")(require2("./transport/eventsource")),
-          require2("./transport/htmlfile"),
-          require2("./transport/lib/iframe-wrap")(require2("./transport/htmlfile")),
-          require2("./transport/xhr-polling"),
-          require2("./transport/xdr-polling"),
-          require2("./transport/lib/iframe-wrap")(require2("./transport/xhr-polling")),
-          require2("./transport/jsonp-polling")
+          require2("./transport/xhr-polling")
         ];
-      }, { "./transport/eventsource": 20, "./transport/htmlfile": 21, "./transport/jsonp-polling": 23, "./transport/lib/iframe-wrap": 26, "./transport/websocket": 38, "./transport/xdr-polling": 39, "./transport/xdr-streaming": 40, "./transport/xhr-polling": 41, "./transport/xhr-streaming": 42 }], 17: [function(require2, module3, exports3) {
+      }, { "./transport/eventsource": 15, "./transport/websocket": 24, "./transport/xhr-polling": 25, "./transport/xhr-streaming": 26 }], 12: [function(require2, module3, exports3) {
         (function(process, global2) {
           (function() {
             "use strict";
@@ -1196,13 +756,13 @@ var require_sockjs = __commonJS({
             module3.exports = AbstractXHRObject;
           }).call(this);
         }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/event": 46, "../../utils/url": 52, "debug": 54, "events": 3, "inherits": 56 }], 18: [function(require2, module3, exports3) {
+      }, { "../../utils/event": 30, "../../utils/url": 35, "debug": 37, "events": 3, "inherits": 39 }], 13: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             module3.exports = global2.EventSource;
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 19: [function(require2, module3, exports3) {
+      }, {}], 14: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -1216,7 +776,7 @@ var require_sockjs = __commonJS({
             }
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 20: [function(require2, module3, exports3) {
+      }, {}], 15: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), EventSourceReceiver = require2("./receiver/eventsource"), XHRCorsObject = require2("./sender/xhr-cors"), EventSourceDriver = require2("./driver/eventsource");
         function EventSourceTransport(transUrl) {
@@ -1232,153 +792,7 @@ var require_sockjs = __commonJS({
         EventSourceTransport.transportName = "eventsource";
         EventSourceTransport.roundTrips = 2;
         module3.exports = EventSourceTransport;
-      }, { "./driver/eventsource": 18, "./lib/ajax-based": 24, "./receiver/eventsource": 29, "./sender/xhr-cors": 35, "inherits": 56 }], 21: [function(require2, module3, exports3) {
-        "use strict";
-        var inherits = require2("inherits"), HtmlfileReceiver = require2("./receiver/htmlfile"), XHRLocalObject = require2("./sender/xhr-local"), AjaxBasedTransport = require2("./lib/ajax-based");
-        function HtmlFileTransport(transUrl) {
-          if (!HtmlfileReceiver.enabled) {
-            throw new Error("Transport created when disabled");
-          }
-          AjaxBasedTransport.call(this, transUrl, "/htmlfile", HtmlfileReceiver, XHRLocalObject);
-        }
-        inherits(HtmlFileTransport, AjaxBasedTransport);
-        HtmlFileTransport.enabled = function(info) {
-          return HtmlfileReceiver.enabled && info.sameOrigin;
-        };
-        HtmlFileTransport.transportName = "htmlfile";
-        HtmlFileTransport.roundTrips = 2;
-        module3.exports = HtmlFileTransport;
-      }, { "./lib/ajax-based": 24, "./receiver/htmlfile": 30, "./sender/xhr-local": 37, "inherits": 56 }], 22: [function(require2, module3, exports3) {
-        (function(process) {
-          (function() {
-            "use strict";
-            var inherits = require2("inherits"), EventEmitter = require2("events").EventEmitter, version = require2("../version"), urlUtils = require2("../utils/url"), iframeUtils = require2("../utils/iframe"), eventUtils = require2("../utils/event"), random = require2("../utils/random");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:transport:iframe");
-            }
-            function IframeTransport(transport, transUrl, baseUrl) {
-              if (!IframeTransport.enabled()) {
-                throw new Error("Transport created when disabled");
-              }
-              EventEmitter.call(this);
-              var self2 = this;
-              this.origin = urlUtils.getOrigin(baseUrl);
-              this.baseUrl = baseUrl;
-              this.transUrl = transUrl;
-              this.transport = transport;
-              this.windowId = random.string(8);
-              var iframeUrl = urlUtils.addPath(baseUrl, "/iframe.html") + "#" + this.windowId;
-              debug(transport, transUrl, iframeUrl);
-              this.iframeObj = iframeUtils.createIframe(iframeUrl, function(r) {
-                debug("err callback");
-                self2.emit("close", 1006, "Unable to load an iframe (" + r + ")");
-                self2.close();
-              });
-              this.onmessageCallback = this._message.bind(this);
-              eventUtils.attachEvent("message", this.onmessageCallback);
-            }
-            inherits(IframeTransport, EventEmitter);
-            IframeTransport.prototype.close = function() {
-              debug("close");
-              this.removeAllListeners();
-              if (this.iframeObj) {
-                eventUtils.detachEvent("message", this.onmessageCallback);
-                try {
-                  this.postMessage("c");
-                } catch (x) {
-                }
-                this.iframeObj.cleanup();
-                this.iframeObj = null;
-                this.onmessageCallback = this.iframeObj = null;
-              }
-            };
-            IframeTransport.prototype._message = function(e) {
-              debug("message", e.data);
-              if (!urlUtils.isOriginEqual(e.origin, this.origin)) {
-                debug("not same origin", e.origin, this.origin);
-                return;
-              }
-              var iframeMessage;
-              try {
-                iframeMessage = JSON.parse(e.data);
-              } catch (ignored) {
-                debug("bad json", e.data);
-                return;
-              }
-              if (iframeMessage.windowId !== this.windowId) {
-                debug("mismatched window id", iframeMessage.windowId, this.windowId);
-                return;
-              }
-              switch (iframeMessage.type) {
-                case "s":
-                  this.iframeObj.loaded();
-                  this.postMessage("s", JSON.stringify([
-                    version,
-                    this.transport,
-                    this.transUrl,
-                    this.baseUrl
-                  ]));
-                  break;
-                case "t":
-                  this.emit("message", iframeMessage.data);
-                  break;
-                case "c":
-                  var cdata;
-                  try {
-                    cdata = JSON.parse(iframeMessage.data);
-                  } catch (ignored) {
-                    debug("bad json", iframeMessage.data);
-                    return;
-                  }
-                  this.emit("close", cdata[0], cdata[1]);
-                  this.close();
-                  break;
-              }
-            };
-            IframeTransport.prototype.postMessage = function(type, data) {
-              debug("postMessage", type, data);
-              this.iframeObj.post(JSON.stringify({
-                windowId: this.windowId,
-                type,
-                data: data || ""
-              }), this.origin);
-            };
-            IframeTransport.prototype.send = function(message) {
-              debug("send", message);
-              this.postMessage("m", message);
-            };
-            IframeTransport.enabled = function() {
-              return iframeUtils.iframeEnabled;
-            };
-            IframeTransport.transportName = "iframe";
-            IframeTransport.roundTrips = 2;
-            module3.exports = IframeTransport;
-          }).call(this);
-        }).call(this, { env: {} });
-      }, { "../utils/event": 46, "../utils/iframe": 47, "../utils/random": 50, "../utils/url": 52, "../version": 53, "debug": 54, "events": 3, "inherits": 56 }], 23: [function(require2, module3, exports3) {
-        (function(global2) {
-          (function() {
-            "use strict";
-            var inherits = require2("inherits"), SenderReceiver = require2("./lib/sender-receiver"), JsonpReceiver = require2("./receiver/jsonp"), jsonpSender = require2("./sender/jsonp");
-            function JsonPTransport(transUrl) {
-              if (!JsonPTransport.enabled()) {
-                throw new Error("Transport created when disabled");
-              }
-              SenderReceiver.call(this, transUrl, "/jsonp", jsonpSender, JsonpReceiver);
-            }
-            inherits(JsonPTransport, SenderReceiver);
-            JsonPTransport.enabled = function() {
-              return !!global2.document;
-            };
-            JsonPTransport.transportName = "jsonp-polling";
-            JsonPTransport.roundTrips = 1;
-            JsonPTransport.needBody = true;
-            module3.exports = JsonPTransport;
-          }).call(this);
-        }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./lib/sender-receiver": 28, "./receiver/jsonp": 31, "./sender/jsonp": 33, "inherits": 56 }], 24: [function(require2, module3, exports3) {
+      }, { "./driver/eventsource": 13, "./lib/ajax-based": 16, "./receiver/eventsource": 20, "./sender/xhr-cors": 22, "inherits": 39 }], 16: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1422,7 +836,7 @@ var require_sockjs = __commonJS({
             module3.exports = AjaxBasedTransport;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "../../utils/url": 52, "./sender-receiver": 28, "debug": 54, "inherits": 56 }], 25: [function(require2, module3, exports3) {
+      }, { "../../utils/url": 35, "./sender-receiver": 19, "debug": 37, "inherits": 39 }], 17: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1495,33 +909,7 @@ var require_sockjs = __commonJS({
             module3.exports = BufferedSender;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54, "events": 3, "inherits": 56 }], 26: [function(require2, module3, exports3) {
-        (function(global2) {
-          (function() {
-            "use strict";
-            var inherits = require2("inherits"), IframeTransport = require2("../iframe"), objectUtils = require2("../../utils/object");
-            module3.exports = function(transport) {
-              function IframeWrapTransport(transUrl, baseUrl) {
-                IframeTransport.call(this, transport.transportName, transUrl, baseUrl);
-              }
-              inherits(IframeWrapTransport, IframeTransport);
-              IframeWrapTransport.enabled = function(url, info) {
-                if (!global2.document) {
-                  return false;
-                }
-                var iframeInfo = objectUtils.extend({}, info);
-                iframeInfo.sameOrigin = true;
-                return transport.enabled(iframeInfo) && IframeTransport.enabled();
-              };
-              IframeWrapTransport.transportName = "iframe-" + transport.transportName;
-              IframeWrapTransport.needBody = true;
-              IframeWrapTransport.roundTrips = IframeTransport.roundTrips + transport.roundTrips - 1;
-              IframeWrapTransport.facadeTransport = transport;
-              return IframeWrapTransport;
-            };
-          }).call(this);
-        }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/object": 49, "../iframe": 22, "inherits": 56 }], 27: [function(require2, module3, exports3) {
+      }, { "debug": 37, "events": 3, "inherits": 39 }], 18: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1572,7 +960,7 @@ var require_sockjs = __commonJS({
             module3.exports = Polling;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54, "events": 3, "inherits": 56 }], 28: [function(require2, module3, exports3) {
+      }, { "debug": 37, "events": 3, "inherits": 39 }], 19: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1612,7 +1000,7 @@ var require_sockjs = __commonJS({
             module3.exports = SenderReceiver;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "../../utils/url": 52, "./buffered-sender": 25, "./polling": 27, "debug": 54, "inherits": 56 }], 29: [function(require2, module3, exports3) {
+      }, { "../../utils/url": 35, "./buffered-sender": 17, "./polling": 18, "debug": 37, "inherits": 39 }], 20: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1667,215 +1055,7 @@ var require_sockjs = __commonJS({
             module3.exports = EventSourceReceiver;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "../driver/eventsource": 18, "debug": 54, "events": 3, "inherits": 56 }], 30: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var inherits = require2("inherits"), iframeUtils = require2("../../utils/iframe"), urlUtils = require2("../../utils/url"), EventEmitter = require2("events").EventEmitter, random = require2("../../utils/random");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:receiver:htmlfile");
-            }
-            function HtmlfileReceiver(url) {
-              debug(url);
-              EventEmitter.call(this);
-              var self2 = this;
-              iframeUtils.polluteGlobalNamespace();
-              this.id = "a" + random.string(6);
-              url = urlUtils.addQuery(url, "c=" + decodeURIComponent(iframeUtils.WPrefix + "." + this.id));
-              debug("using htmlfile", HtmlfileReceiver.htmlfileEnabled);
-              var constructFunc = HtmlfileReceiver.htmlfileEnabled ? iframeUtils.createHtmlfile : iframeUtils.createIframe;
-              global2[iframeUtils.WPrefix][this.id] = {
-                start: function() {
-                  debug("start");
-                  self2.iframeObj.loaded();
-                },
-                message: function(data) {
-                  debug("message", data);
-                  self2.emit("message", data);
-                },
-                stop: function() {
-                  debug("stop");
-                  self2._cleanup();
-                  self2._close("network");
-                }
-              };
-              this.iframeObj = constructFunc(url, function() {
-                debug("callback");
-                self2._cleanup();
-                self2._close("permanent");
-              });
-            }
-            inherits(HtmlfileReceiver, EventEmitter);
-            HtmlfileReceiver.prototype.abort = function() {
-              debug("abort");
-              this._cleanup();
-              this._close("user");
-            };
-            HtmlfileReceiver.prototype._cleanup = function() {
-              debug("_cleanup");
-              if (this.iframeObj) {
-                this.iframeObj.cleanup();
-                this.iframeObj = null;
-              }
-              delete global2[iframeUtils.WPrefix][this.id];
-            };
-            HtmlfileReceiver.prototype._close = function(reason) {
-              debug("_close", reason);
-              this.emit("close", null, reason);
-              this.removeAllListeners();
-            };
-            HtmlfileReceiver.htmlfileEnabled = false;
-            var axo = ["Active"].concat("Object").join("X");
-            if (axo in global2) {
-              try {
-                HtmlfileReceiver.htmlfileEnabled = !!new global2[axo]("htmlfile");
-              } catch (x) {
-              }
-            }
-            HtmlfileReceiver.enabled = HtmlfileReceiver.htmlfileEnabled || iframeUtils.iframeEnabled;
-            module3.exports = HtmlfileReceiver;
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/iframe": 47, "../../utils/random": 50, "../../utils/url": 52, "debug": 54, "events": 3, "inherits": 56 }], 31: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var utils = require2("../../utils/iframe"), random = require2("../../utils/random"), browser = require2("../../utils/browser"), urlUtils = require2("../../utils/url"), inherits = require2("inherits"), EventEmitter = require2("events").EventEmitter;
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:receiver:jsonp");
-            }
-            function JsonpReceiver(url) {
-              debug(url);
-              var self2 = this;
-              EventEmitter.call(this);
-              utils.polluteGlobalNamespace();
-              this.id = "a" + random.string(6);
-              var urlWithId = urlUtils.addQuery(url, "c=" + encodeURIComponent(utils.WPrefix + "." + this.id));
-              global2[utils.WPrefix][this.id] = this._callback.bind(this);
-              this._createScript(urlWithId);
-              this.timeoutId = setTimeout(function() {
-                debug("timeout");
-                self2._abort(new Error("JSONP script loaded abnormally (timeout)"));
-              }, JsonpReceiver.timeout);
-            }
-            inherits(JsonpReceiver, EventEmitter);
-            JsonpReceiver.prototype.abort = function() {
-              debug("abort");
-              if (global2[utils.WPrefix][this.id]) {
-                var err = new Error("JSONP user aborted read");
-                err.code = 1e3;
-                this._abort(err);
-              }
-            };
-            JsonpReceiver.timeout = 35e3;
-            JsonpReceiver.scriptErrorTimeout = 1e3;
-            JsonpReceiver.prototype._callback = function(data) {
-              debug("_callback", data);
-              this._cleanup();
-              if (this.aborting) {
-                return;
-              }
-              if (data) {
-                debug("message", data);
-                this.emit("message", data);
-              }
-              this.emit("close", null, "network");
-              this.removeAllListeners();
-            };
-            JsonpReceiver.prototype._abort = function(err) {
-              debug("_abort", err);
-              this._cleanup();
-              this.aborting = true;
-              this.emit("close", err.code, err.message);
-              this.removeAllListeners();
-            };
-            JsonpReceiver.prototype._cleanup = function() {
-              debug("_cleanup");
-              clearTimeout(this.timeoutId);
-              if (this.script2) {
-                this.script2.parentNode.removeChild(this.script2);
-                this.script2 = null;
-              }
-              if (this.script) {
-                var script = this.script;
-                script.parentNode.removeChild(script);
-                script.onreadystatechange = script.onerror = script.onload = script.onclick = null;
-                this.script = null;
-              }
-              delete global2[utils.WPrefix][this.id];
-            };
-            JsonpReceiver.prototype._scriptError = function() {
-              debug("_scriptError");
-              var self2 = this;
-              if (this.errorTimer) {
-                return;
-              }
-              this.errorTimer = setTimeout(function() {
-                if (!self2.loadedOkay) {
-                  self2._abort(new Error("JSONP script loaded abnormally (onerror)"));
-                }
-              }, JsonpReceiver.scriptErrorTimeout);
-            };
-            JsonpReceiver.prototype._createScript = function(url) {
-              debug("_createScript", url);
-              var self2 = this;
-              var script = this.script = global2.document.createElement("script");
-              var script2;
-              script.id = "a" + random.string(8);
-              script.src = url;
-              script.type = "text/javascript";
-              script.charset = "UTF-8";
-              script.onerror = this._scriptError.bind(this);
-              script.onload = function() {
-                debug("onload");
-                self2._abort(new Error("JSONP script loaded abnormally (onload)"));
-              };
-              script.onreadystatechange = function() {
-                debug("onreadystatechange", script.readyState);
-                if (/loaded|closed/.test(script.readyState)) {
-                  if (script && script.htmlFor && script.onclick) {
-                    self2.loadedOkay = true;
-                    try {
-                      script.onclick();
-                    } catch (x) {
-                    }
-                  }
-                  if (script) {
-                    self2._abort(new Error("JSONP script loaded abnormally (onreadystatechange)"));
-                  }
-                }
-              };
-              if (typeof script.async === "undefined" && global2.document.attachEvent) {
-                if (!browser.isOpera()) {
-                  try {
-                    script.htmlFor = script.id;
-                    script.event = "onclick";
-                  } catch (x) {
-                  }
-                  script.async = true;
-                } else {
-                  script2 = this.script2 = global2.document.createElement("script");
-                  script2.text = "try{var a = document.getElementById('" + script.id + "'); if(a)a.onerror();}catch(x){};";
-                  script.async = script2.async = false;
-                }
-              }
-              if (typeof script.async !== "undefined") {
-                script.async = true;
-              }
-              var head = global2.document.getElementsByTagName("head")[0];
-              head.insertBefore(script, head.firstChild);
-              if (script2) {
-                head.insertBefore(script2, head.firstChild);
-              }
-            };
-            module3.exports = JsonpReceiver;
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/browser": 44, "../../utils/iframe": 47, "../../utils/random": 50, "../../utils/url": 52, "debug": 54, "events": 3, "inherits": 56 }], 32: [function(require2, module3, exports3) {
+      }, { "../driver/eventsource": 13, "debug": 37, "events": 3, "inherits": 39 }], 21: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -1939,176 +1119,7 @@ var require_sockjs = __commonJS({
             module3.exports = XhrReceiver;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54, "events": 3, "inherits": 56 }], 33: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var random = require2("../../utils/random"), urlUtils = require2("../../utils/url");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:sender:jsonp");
-            }
-            var form, area;
-            function createIframe(id) {
-              debug("createIframe", id);
-              try {
-                return global2.document.createElement('<iframe name="' + id + '">');
-              } catch (x) {
-                var iframe = global2.document.createElement("iframe");
-                iframe.name = id;
-                return iframe;
-              }
-            }
-            function createForm() {
-              debug("createForm");
-              form = global2.document.createElement("form");
-              form.style.display = "none";
-              form.style.position = "absolute";
-              form.method = "POST";
-              form.enctype = "application/x-www-form-urlencoded";
-              form.acceptCharset = "UTF-8";
-              area = global2.document.createElement("textarea");
-              area.name = "d";
-              form.appendChild(area);
-              global2.document.body.appendChild(form);
-            }
-            module3.exports = function(url, payload, callback) {
-              debug(url, payload);
-              if (!form) {
-                createForm();
-              }
-              var id = "a" + random.string(8);
-              form.target = id;
-              form.action = urlUtils.addQuery(urlUtils.addPath(url, "/jsonp_send"), "i=" + id);
-              var iframe = createIframe(id);
-              iframe.id = id;
-              iframe.style.display = "none";
-              form.appendChild(iframe);
-              try {
-                area.value = payload;
-              } catch (e) {
-              }
-              form.submit();
-              var completed = function(err) {
-                debug("completed", id, err);
-                if (!iframe.onerror) {
-                  return;
-                }
-                iframe.onreadystatechange = iframe.onerror = iframe.onload = null;
-                setTimeout(function() {
-                  debug("cleaning up", id);
-                  iframe.parentNode.removeChild(iframe);
-                  iframe = null;
-                }, 500);
-                area.value = "";
-                callback(err);
-              };
-              iframe.onerror = function() {
-                debug("onerror", id);
-                completed();
-              };
-              iframe.onload = function() {
-                debug("onload", id);
-                completed();
-              };
-              iframe.onreadystatechange = function(e) {
-                debug("onreadystatechange", id, iframe.readyState, e);
-                if (iframe.readyState === "complete") {
-                  completed();
-                }
-              };
-              return function() {
-                debug("aborted", id);
-                completed(new Error("Aborted"));
-              };
-            };
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/random": 50, "../../utils/url": 52, "debug": 54 }], 34: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var EventEmitter = require2("events").EventEmitter, inherits = require2("inherits"), eventUtils = require2("../../utils/event"), browser = require2("../../utils/browser"), urlUtils = require2("../../utils/url");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:sender:xdr");
-            }
-            function XDRObject(method, url, payload) {
-              debug(method, url);
-              var self2 = this;
-              EventEmitter.call(this);
-              setTimeout(function() {
-                self2._start(method, url, payload);
-              }, 0);
-            }
-            inherits(XDRObject, EventEmitter);
-            XDRObject.prototype._start = function(method, url, payload) {
-              debug("_start");
-              var self2 = this;
-              var xdr = new global2.XDomainRequest();
-              url = urlUtils.addQuery(url, "t=" + +/* @__PURE__ */ new Date());
-              xdr.onerror = function() {
-                debug("onerror");
-                self2._error();
-              };
-              xdr.ontimeout = function() {
-                debug("ontimeout");
-                self2._error();
-              };
-              xdr.onprogress = function() {
-                debug("progress", xdr.responseText);
-                self2.emit("chunk", 200, xdr.responseText);
-              };
-              xdr.onload = function() {
-                debug("load");
-                self2.emit("finish", 200, xdr.responseText);
-                self2._cleanup(false);
-              };
-              this.xdr = xdr;
-              this.unloadRef = eventUtils.unloadAdd(function() {
-                self2._cleanup(true);
-              });
-              try {
-                this.xdr.open(method, url);
-                if (this.timeout) {
-                  this.xdr.timeout = this.timeout;
-                }
-                this.xdr.send(payload);
-              } catch (x) {
-                this._error();
-              }
-            };
-            XDRObject.prototype._error = function() {
-              this.emit("finish", 0, "");
-              this._cleanup(false);
-            };
-            XDRObject.prototype._cleanup = function(abort) {
-              debug("cleanup", abort);
-              if (!this.xdr) {
-                return;
-              }
-              this.removeAllListeners();
-              eventUtils.unloadDel(this.unloadRef);
-              this.xdr.ontimeout = this.xdr.onerror = this.xdr.onprogress = this.xdr.onload = null;
-              if (abort) {
-                try {
-                  this.xdr.abort();
-                } catch (x) {
-                }
-              }
-              this.unloadRef = this.xdr = null;
-            };
-            XDRObject.prototype.close = function() {
-              debug("close");
-              this._cleanup(true);
-            };
-            XDRObject.enabled = !!(global2.XDomainRequest && browser.hasDomain());
-            module3.exports = XDRObject;
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../../utils/browser": 44, "../../utils/event": 46, "../../utils/url": 52, "debug": 54, "events": 3, "inherits": 56 }], 35: [function(require2, module3, exports3) {
+      }, { "debug": 37, "events": 3, "inherits": 39 }], 22: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), XhrDriver = require2("../driver/xhr");
         function XHRCorsObject(method, url, payload, opts) {
@@ -2117,23 +1128,7 @@ var require_sockjs = __commonJS({
         inherits(XHRCorsObject, XhrDriver);
         XHRCorsObject.enabled = XhrDriver.enabled && XhrDriver.supportsCORS;
         module3.exports = XHRCorsObject;
-      }, { "../driver/xhr": 17, "inherits": 56 }], 36: [function(require2, module3, exports3) {
-        "use strict";
-        var EventEmitter = require2("events").EventEmitter, inherits = require2("inherits");
-        function XHRFake() {
-          var self2 = this;
-          EventEmitter.call(this);
-          this.to = setTimeout(function() {
-            self2.emit("finish", 200, "{}");
-          }, XHRFake.timeout);
-        }
-        inherits(XHRFake, EventEmitter);
-        XHRFake.prototype.close = function() {
-          clearTimeout(this.to);
-        };
-        XHRFake.timeout = 2e3;
-        module3.exports = XHRFake;
-      }, { "events": 3, "inherits": 56 }], 37: [function(require2, module3, exports3) {
+      }, { "../driver/xhr": 12, "inherits": 39 }], 23: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), XhrDriver = require2("../driver/xhr");
         function XHRLocalObject(method, url, payload) {
@@ -2144,7 +1139,7 @@ var require_sockjs = __commonJS({
         inherits(XHRLocalObject, XhrDriver);
         XHRLocalObject.enabled = XhrDriver.enabled;
         module3.exports = XHRLocalObject;
-      }, { "../driver/xhr": 17, "inherits": 56 }], 38: [function(require2, module3, exports3) {
+      }, { "../driver/xhr": 12, "inherits": 39 }], 24: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -2221,40 +1216,7 @@ var require_sockjs = __commonJS({
             module3.exports = WebSocketTransport;
           }).call(this);
         }).call(this, { env: {} });
-      }, { "../utils/event": 46, "../utils/url": 52, "./driver/websocket": 19, "debug": 54, "events": 3, "inherits": 56 }], 39: [function(require2, module3, exports3) {
-        "use strict";
-        var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), XdrStreamingTransport = require2("./xdr-streaming"), XhrReceiver = require2("./receiver/xhr"), XDRObject = require2("./sender/xdr");
-        function XdrPollingTransport(transUrl) {
-          if (!XDRObject.enabled) {
-            throw new Error("Transport created when disabled");
-          }
-          AjaxBasedTransport.call(this, transUrl, "/xhr", XhrReceiver, XDRObject);
-        }
-        inherits(XdrPollingTransport, AjaxBasedTransport);
-        XdrPollingTransport.enabled = XdrStreamingTransport.enabled;
-        XdrPollingTransport.transportName = "xdr-polling";
-        XdrPollingTransport.roundTrips = 2;
-        module3.exports = XdrPollingTransport;
-      }, { "./lib/ajax-based": 24, "./receiver/xhr": 32, "./sender/xdr": 34, "./xdr-streaming": 40, "inherits": 56 }], 40: [function(require2, module3, exports3) {
-        "use strict";
-        var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), XhrReceiver = require2("./receiver/xhr"), XDRObject = require2("./sender/xdr");
-        function XdrStreamingTransport(transUrl) {
-          if (!XDRObject.enabled) {
-            throw new Error("Transport created when disabled");
-          }
-          AjaxBasedTransport.call(this, transUrl, "/xhr_streaming", XhrReceiver, XDRObject);
-        }
-        inherits(XdrStreamingTransport, AjaxBasedTransport);
-        XdrStreamingTransport.enabled = function(info) {
-          if (info.cookie_needed || info.nullOrigin) {
-            return false;
-          }
-          return XDRObject.enabled && info.sameScheme;
-        };
-        XdrStreamingTransport.transportName = "xdr-streaming";
-        XdrStreamingTransport.roundTrips = 2;
-        module3.exports = XdrStreamingTransport;
-      }, { "./lib/ajax-based": 24, "./receiver/xhr": 32, "./sender/xdr": 34, "inherits": 56 }], 41: [function(require2, module3, exports3) {
+      }, { "../utils/event": 30, "../utils/url": 35, "./driver/websocket": 14, "debug": 37, "events": 3, "inherits": 39 }], 25: [function(require2, module3, exports3) {
         "use strict";
         var inherits = require2("inherits"), AjaxBasedTransport = require2("./lib/ajax-based"), XhrReceiver = require2("./receiver/xhr"), XHRCorsObject = require2("./sender/xhr-cors"), XHRLocalObject = require2("./sender/xhr-local");
         function XhrPollingTransport(transUrl) {
@@ -2276,7 +1238,7 @@ var require_sockjs = __commonJS({
         XhrPollingTransport.transportName = "xhr-polling";
         XhrPollingTransport.roundTrips = 2;
         module3.exports = XhrPollingTransport;
-      }, { "./lib/ajax-based": 24, "./receiver/xhr": 32, "./sender/xhr-cors": 35, "./sender/xhr-local": 37, "inherits": 56 }], 42: [function(require2, module3, exports3) {
+      }, { "./lib/ajax-based": 16, "./receiver/xhr": 21, "./sender/xhr-cors": 22, "./sender/xhr-local": 23, "inherits": 39 }], 26: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -2303,7 +1265,7 @@ var require_sockjs = __commonJS({
             module3.exports = XhrStreamingTransport;
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "../utils/browser": 44, "./lib/ajax-based": 24, "./receiver/xhr": 32, "./sender/xhr-cors": 35, "./sender/xhr-local": 37, "inherits": 56 }], 43: [function(require2, module3, exports3) {
+      }, { "../utils/browser": 28, "./lib/ajax-based": 16, "./receiver/xhr": 21, "./sender/xhr-cors": 22, "./sender/xhr-local": 23, "inherits": 39 }], 27: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -2324,16 +1286,13 @@ var require_sockjs = __commonJS({
             }
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 44: [function(require2, module3, exports3) {
+      }, {}], 28: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
             module3.exports = {
               isOpera: function() {
                 return global2.navigator && /opera/i.test(global2.navigator.userAgent);
-              },
-              isKonqueror: function() {
-                return global2.navigator && /konqueror/i.test(global2.navigator.userAgent);
               },
               hasDomain: function() {
                 if (!global2.document) {
@@ -2348,7 +1307,7 @@ var require_sockjs = __commonJS({
             };
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 45: [function(require2, module3, exports3) {
+      }, {}], 29: [function(require2, module3, exports3) {
         "use strict";
         var extraEscapable = /[\x00-\x1f\ud800-\udfff\ufffe\uffff\u0300-\u0333\u033d-\u0346\u034a-\u034c\u0350-\u0352\u0357-\u0358\u035c-\u0362\u0374\u037e\u0387\u0591-\u05af\u05c4\u0610-\u0617\u0653-\u0654\u0657-\u065b\u065d-\u065e\u06df-\u06e2\u06eb-\u06ec\u0730\u0732-\u0733\u0735-\u0736\u073a\u073d\u073f-\u0741\u0743\u0745\u0747\u07eb-\u07f1\u0951\u0958-\u095f\u09dc-\u09dd\u09df\u0a33\u0a36\u0a59-\u0a5b\u0a5e\u0b5c-\u0b5d\u0e38-\u0e39\u0f43\u0f4d\u0f52\u0f57\u0f5c\u0f69\u0f72-\u0f76\u0f78\u0f80-\u0f83\u0f93\u0f9d\u0fa2\u0fa7\u0fac\u0fb9\u1939-\u193a\u1a17\u1b6b\u1cda-\u1cdb\u1dc0-\u1dcf\u1dfc\u1dfe\u1f71\u1f73\u1f75\u1f77\u1f79\u1f7b\u1f7d\u1fbb\u1fbe\u1fc9\u1fcb\u1fd3\u1fdb\u1fe3\u1feb\u1fee-\u1fef\u1ff9\u1ffb\u1ffd\u2000-\u2001\u20d0-\u20d1\u20d4-\u20d7\u20e7-\u20e9\u2126\u212a-\u212b\u2329-\u232a\u2adc\u302b-\u302c\uaab2-\uaab3\uf900-\ufa0d\ufa10\ufa12\ufa15-\ufa1e\ufa20\ufa22\ufa25-\ufa26\ufa2a-\ufa2d\ufa30-\ufa6d\ufa70-\ufad9\ufb1d\ufb1f\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4e\ufff0-\uffff]/g, extraLookup;
         var unrollLookup = function(escapable) {
@@ -2381,7 +1340,7 @@ var require_sockjs = __commonJS({
             });
           }
         };
-      }, {}], 46: [function(require2, module3, exports3) {
+      }, {}], 30: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -2446,167 +1405,7 @@ var require_sockjs = __commonJS({
             }
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./random": 50 }], 47: [function(require2, module3, exports3) {
-        (function(process, global2) {
-          (function() {
-            "use strict";
-            var eventUtils = require2("./event"), browser = require2("./browser");
-            var debug = function() {
-            };
-            if (process.env.NODE_ENV !== "production") {
-              debug = require2("debug")("sockjs-client:utils:iframe");
-            }
-            module3.exports = {
-              WPrefix: "_jp",
-              currentWindowId: null,
-              polluteGlobalNamespace: function() {
-                if (!(module3.exports.WPrefix in global2)) {
-                  global2[module3.exports.WPrefix] = {};
-                }
-              },
-              postMessage: function(type, data) {
-                if (global2.parent !== global2) {
-                  global2.parent.postMessage(JSON.stringify({
-                    windowId: module3.exports.currentWindowId,
-                    type,
-                    data: data || ""
-                  }), "*");
-                } else {
-                  debug("Cannot postMessage, no parent window.", type, data);
-                }
-              },
-              createIframe: function(iframeUrl, errorCallback) {
-                var iframe = global2.document.createElement("iframe");
-                var tref, unloadRef;
-                var unattach = function() {
-                  debug("unattach");
-                  clearTimeout(tref);
-                  try {
-                    iframe.onload = null;
-                  } catch (x) {
-                  }
-                  iframe.onerror = null;
-                };
-                var cleanup = function() {
-                  debug("cleanup");
-                  if (iframe) {
-                    unattach();
-                    setTimeout(function() {
-                      if (iframe) {
-                        iframe.parentNode.removeChild(iframe);
-                      }
-                      iframe = null;
-                    }, 0);
-                    eventUtils.unloadDel(unloadRef);
-                  }
-                };
-                var onerror = function(err) {
-                  debug("onerror", err);
-                  if (iframe) {
-                    cleanup();
-                    errorCallback(err);
-                  }
-                };
-                var post = function(msg, origin) {
-                  debug("post", msg, origin);
-                  setTimeout(function() {
-                    try {
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage(msg, origin);
-                      }
-                    } catch (x) {
-                    }
-                  }, 0);
-                };
-                iframe.src = iframeUrl;
-                iframe.style.display = "none";
-                iframe.style.position = "absolute";
-                iframe.onerror = function() {
-                  onerror("onerror");
-                };
-                iframe.onload = function() {
-                  debug("onload");
-                  clearTimeout(tref);
-                  tref = setTimeout(function() {
-                    onerror("onload timeout");
-                  }, 2e3);
-                };
-                global2.document.body.appendChild(iframe);
-                tref = setTimeout(function() {
-                  onerror("timeout");
-                }, 15e3);
-                unloadRef = eventUtils.unloadAdd(cleanup);
-                return {
-                  post,
-                  cleanup,
-                  loaded: unattach
-                };
-              },
-              createHtmlfile: function(iframeUrl, errorCallback) {
-                var axo = ["Active"].concat("Object").join("X");
-                var doc = new global2[axo]("htmlfile");
-                var tref, unloadRef;
-                var iframe;
-                var unattach = function() {
-                  clearTimeout(tref);
-                  iframe.onerror = null;
-                };
-                var cleanup = function() {
-                  if (doc) {
-                    unattach();
-                    eventUtils.unloadDel(unloadRef);
-                    iframe.parentNode.removeChild(iframe);
-                    iframe = doc = null;
-                    CollectGarbage();
-                  }
-                };
-                var onerror = function(r) {
-                  debug("onerror", r);
-                  if (doc) {
-                    cleanup();
-                    errorCallback(r);
-                  }
-                };
-                var post = function(msg, origin) {
-                  try {
-                    setTimeout(function() {
-                      if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage(msg, origin);
-                      }
-                    }, 0);
-                  } catch (x) {
-                  }
-                };
-                doc.open();
-                doc.write('<html><script>document.domain="' + global2.document.domain + '";<\/script></html>');
-                doc.close();
-                doc.parentWindow[module3.exports.WPrefix] = global2[module3.exports.WPrefix];
-                var c = doc.createElement("div");
-                doc.body.appendChild(c);
-                iframe = doc.createElement("iframe");
-                c.appendChild(iframe);
-                iframe.src = iframeUrl;
-                iframe.onerror = function() {
-                  onerror("onerror");
-                };
-                tref = setTimeout(function() {
-                  onerror("timeout");
-                }, 15e3);
-                unloadRef = eventUtils.unloadAdd(cleanup);
-                return {
-                  post,
-                  cleanup,
-                  loaded: unattach
-                };
-              }
-            };
-            module3.exports.iframeEnabled = false;
-            if (global2.document) {
-              module3.exports.iframeEnabled = (typeof global2.postMessage === "function" || typeof global2.postMessage === "object") && !browser.isKonqueror();
-            }
-          }).call(this);
-        }).call(this, { env: {} }, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "./browser": 44, "./event": 46, "debug": 54 }], 48: [function(require2, module3, exports3) {
+      }, { "./random": 33 }], 31: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -2625,7 +1424,7 @@ var require_sockjs = __commonJS({
             module3.exports = logObject;
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, {}], 49: [function(require2, module3, exports3) {
+      }, {}], 32: [function(require2, module3, exports3) {
         "use strict";
         module3.exports = {
           isObject: function(obj) {
@@ -2648,7 +1447,7 @@ var require_sockjs = __commonJS({
             return obj;
           }
         };
-      }, {}], 50: [function(require2, module3, exports3) {
+      }, {}], 33: [function(require2, module3, exports3) {
         "use strict";
         var crypto = require2("crypto");
         var _randomStringChars = "abcdefghijklmnopqrstuvwxyz012345";
@@ -2671,7 +1470,7 @@ var require_sockjs = __commonJS({
             return (p + this.number(max)).slice(-t);
           }
         };
-      }, { "crypto": 43 }], 51: [function(require2, module3, exports3) {
+      }, { "crypto": 27 }], 34: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -2684,8 +1483,7 @@ var require_sockjs = __commonJS({
               return {
                 filterToEnabled: function(transportsWhitelist, info) {
                   var transports = {
-                    main: [],
-                    facade: []
+                    main: []
                   };
                   if (!transportsWhitelist) {
                     transportsWhitelist = [];
@@ -2707,9 +1505,6 @@ var require_sockjs = __commonJS({
                     if (trans.enabled(info)) {
                       debug("enabled", trans.transportName);
                       transports.main.push(trans);
-                      if (trans.facadeTransport) {
-                        transports.facade.push(trans.facadeTransport);
-                      }
                     } else {
                       debug("disabled", trans.transportName);
                     }
@@ -2720,7 +1515,7 @@ var require_sockjs = __commonJS({
             };
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54 }], 52: [function(require2, module3, exports3) {
+      }, { "debug": 37 }], 35: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             "use strict";
@@ -2766,9 +1561,9 @@ var require_sockjs = __commonJS({
             };
           }).call(this);
         }).call(this, { env: {} });
-      }, { "debug": 54, "url-parse": 60 }], 53: [function(require2, module3, exports3) {
+      }, { "debug": 37, "url-parse": 43 }], 36: [function(require2, module3, exports3) {
         module3.exports = "2.0.0";
-      }, {}], 54: [function(require2, module3, exports3) {
+      }, {}], 37: [function(require2, module3, exports3) {
         (function(process) {
           (function() {
             exports3.formatArgs = formatArgs;
@@ -2937,7 +1732,7 @@ var require_sockjs = __commonJS({
             };
           }).call(this);
         }).call(this, { env: {} });
-      }, { "./common": 55 }], 55: [function(require2, module3, exports3) {
+      }, { "./common": 38 }], 38: [function(require2, module3, exports3) {
         function setup(env) {
           createDebug.debug = createDebug;
           createDebug.default = createDebug;
@@ -3109,7 +1904,7 @@ var require_sockjs = __commonJS({
           return createDebug;
         }
         module3.exports = setup;
-      }, { "ms": 57 }], 56: [function(require2, module3, exports3) {
+      }, { "ms": 40 }], 39: [function(require2, module3, exports3) {
         if (typeof Object.create === "function") {
           module3.exports = function inherits(ctor, superCtor) {
             if (superCtor) {
@@ -3136,7 +1931,7 @@ var require_sockjs = __commonJS({
             }
           };
         }
-      }, {}], 57: [function(require2, module3, exports3) {
+      }, {}], 40: [function(require2, module3, exports3) {
         var s = 1e3;
         var m = s * 60;
         var h = m * 60;
@@ -3247,7 +2042,7 @@ var require_sockjs = __commonJS({
           var isPlural = msAbs >= n * 1.5;
           return Math.round(ms / n) + " " + name + (isPlural ? "s" : "");
         }
-      }, {}], 58: [function(require2, module3, exports3) {
+      }, {}], 41: [function(require2, module3, exports3) {
         "use strict";
         var has = Object.prototype.hasOwnProperty, undef;
         function decode(input) {
@@ -3293,7 +2088,7 @@ var require_sockjs = __commonJS({
         }
         exports3.stringify = querystringify;
         exports3.parse = querystring;
-      }, {}], 59: [function(require2, module3, exports3) {
+      }, {}], 42: [function(require2, module3, exports3) {
         "use strict";
         module3.exports = function required(port, protocol) {
           protocol = protocol.split(":")[0];
@@ -3315,7 +2110,7 @@ var require_sockjs = __commonJS({
           }
           return port !== 0;
         };
-      }, {}], 60: [function(require2, module3, exports3) {
+      }, {}], 43: [function(require2, module3, exports3) {
         (function(global2) {
           (function() {
             "use strict";
@@ -3615,7 +2410,7 @@ var require_sockjs = __commonJS({
             module3.exports = Url;
           }).call(this);
         }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
-      }, { "querystringify": 58, "requires-port": 59 }] }, {}, [1])(1);
+      }, { "querystringify": 41, "requires-port": 42 }] }, {}, [1])(1);
     });
   }
 });

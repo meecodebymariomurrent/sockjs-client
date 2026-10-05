@@ -179,77 +179,37 @@ bad practice. If you absolutely must do it, you can use
 multiple subdomains, using a different subdomain for every
 SockJS connection.
 
-# Supported transports, by browser (html served from http:// or https://)
+# Supported transports
 
-_Browser_       | _Websockets_     | _Streaming_ | _Polling_
-----------------|------------------|-------------|-------------------
-IE 6, 7         | no               | no          | jsonp-polling
-IE 8, 9 (cookies=no) |    no       | xdr-streaming &dagger; | xdr-polling &dagger;
-IE 8, 9 (cookies=yes)|    no       | iframe-htmlfile | iframe-xhr-polling
-IE 10           | rfc6455          | xhr-streaming   | xhr-polling
-Chrome 6-13     | hixie-76         | xhr-streaming   | xhr-polling
-Chrome 14+      | hybi-10 / rfc6455| xhr-streaming   | xhr-polling
-Firefox <10     | no &Dagger;      | xhr-streaming   | xhr-polling
-Firefox 10+     | hybi-10 / rfc6455| xhr-streaming   | xhr-polling
-Safari 5.x      | hixie-76         | xhr-streaming   | xhr-polling
-Safari 6+       | rfc6455          | xhr-streaming   | xhr-polling
-Opera 10.70+    | no &Dagger;      | iframe-eventsource | iframe-xhr-polling
-Opera 12.10+    | rfc6455          | xhr-streaming | xhr-polling
-Konqueror       | no               | no          | jsonp-polling
+SockJS 2.0 targets current browsers and Node.js. The legacy transports that
+only existed for Internet Explorer 6-9, Opera Presto and similar browsers
+(`xdr-streaming`, `xdr-polling`, `htmlfile`, `jsonp-polling` and the
+`iframe-*` variants) were removed. Servers still advertise them, the client
+simply never uses them. Use an older 1.x release if you need those browsers.
 
+_Browser_             | _Websockets_ | _Streaming_   | _Polling_
+----------------------|--------------|---------------|-------------------
+Chrome, Edge, Firefox, Safari, Opera (current) | rfc6455 | xhr-streaming | xhr-polling
 
- * **&dagger;**: IE 8+ supports [XDomainRequest][^9], which is
-    essentially a modified AJAX/XHR that can do requests across
-    domains. But unfortunately it doesn't send any cookies, which
-    makes it inappropriate for deployments when the load balancer uses
-    JSESSIONID cookie to do sticky sessions.
-
- * **&Dagger;**: Firefox 4.0 and Opera 11.00 and shipped with disabled
-     Websockets "hixie-76". They can still be enabled by manually
-     changing a browser setting.
-
-# Supported transports, by browser (html served from file://)
-
-Sometimes you may want to serve your html from "file://" address - for
-development or if you're using PhoneGap or similar technologies. But
-due to the Cross Origin Policy files served from "file://" have no
-Origin, and that means some of SockJS transports won't work. For this
-reason the SockJS transport table is different than usually, major
-differences are:
-
-_Browser_       | _Websockets_  | _Streaming_        | _Polling_
-----------------|---------------|--------------------|-------------------
-IE 8, 9         | same as above | iframe-htmlfile    | iframe-xhr-polling
-Other           | same as above | iframe-eventsource | iframe-xhr-polling
+Internet Explorer is not supported and is no longer tested.
+`eventsource` is used as a streaming transport where `EventSource` is available.
+The transports are tried in the order websocket, xhr-streaming, eventsource,
+xhr-polling, so a connection behind a proxy that blocks WebSockets falls back to
+the HTTP transports automatically.
 
 # Supported transports, by name
 
 _Transport_          | _References_
 ---------------------|---------------
 websocket (rfc6455)  | [rfc 6455][^10]
-websocket (hixie-76) | [draft-hixie-thewebsocketprotocol-76][^1]
-websocket (hybi-10)  | [draft-ietf-hybi-thewebsocketprotocol-10][^2]
 xhr-streaming        | Transport using [Cross domain XHR][^5] [streaming][^7] capability (readyState=3).
-xdr-streaming        | Transport using [XDomainRequest][^9] [streaming][^7] capability (readyState=3).
 eventsource          | [EventSource/Server-sent events][^4].
-iframe-eventsource   | [EventSource/Server-sent events][^4] used from an [iframe via postMessage][^3].
-htmlfile             | [HtmlFile][^8].
-iframe-htmlfile      | [HtmlFile][^8] used from an [iframe via postMessage][^3].
 xhr-polling          | Long-polling using [cross domain XHR][^5].
-xdr-polling          | Long-polling using [XDomainRequest][^9].
-iframe-xhr-polling   | Long-polling using normal AJAX from an [iframe via postMessage][^3].
-jsonp-polling        | Slow and old fashioned [JSONP polling][^6]. This transport will show "busy indicator" (aka: "spinning wheel") when sending data.
 
 
-[^1]: https://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76
-[^2]: https://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-10
-[^3]: https://developer.mozilla.org/en/DOM/window.postMessage
 [^4]: https://html.spec.whatwg.org/multipage/comms.html#server-sent-events
 [^5]: https://secure.wikimedia.org/wikipedia/en/wiki/XMLHttpRequest#Cross-domain_requests
-[^6]: https://secure.wikimedia.org/wikipedia/en/wiki/JSONP
 [^7]: http://www.debugtheweb.com/test/teststreaming.aspx
-[^8]: http://cometdaily.com/2007/11/18/ie-activexhtmlfile-transport-part-ii/
-[^9]: https://blogs.msdn.microsoft.com/ieinternals/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds/
 [^10]: https://www.rfc-editor.org/rfc/rfc6455.txt
 
 
@@ -342,8 +302,6 @@ There are various browser quirks which we don't intend to address:
 
  * Pressing ESC in Firefox, before Firefox 20, closes the SockJS connection. For a workaround
    and discussion see [#18](https://github.com/sockjs/sockjs-client/issues/18).
- * `jsonp-polling` transport will show a "spinning wheel" (aka. "busy indicator")
-   when sending data.
  * You can't open more than one SockJS connection to one domain at the
    same time due to [the browser's limit of concurrent connections](https://stackoverflow.com/questions/985431/max-parallel-http-connections-in-a-browser)
    (this limit is not counting native WebSocket connections).
