@@ -247,6 +247,34 @@ describe('Node WebSocket driver', function() {
     });
   });
 
+  it('uses a custom http agent given in the "agent" option (proxy hook)', function(done) {
+    var used = 0;
+    var agent = new http.Agent();
+    var createConnection = agent.createConnection;
+    agent.createConnection = function() {
+      used++;
+      return createConnection.apply(this, arguments);
+    };
+    startServer(false, function(ws) {
+      ws.send('via agent');
+    }, function(s) {
+      server = s;
+      var client = new Driver('ws://127.0.0.1:' + s.port + '/', [], { agent: agent });
+      client.onmessage = function(e) {
+        try {
+          expect(e.data).to.equal('via agent');
+          expect(used).to.equal(1);
+          client.close();
+          agent.destroy();
+          done();
+        } catch (err) {
+          done(err);
+        }
+      };
+      client.onerror = function(e) { done(new Error('unexpected error ' + (e && e.message))); };
+    });
+  });
+
   it('sends ping frames at the interval given in the "ping" option', function(done) {
     startServer(false, function(ws) {
       ws.on('ping', function() { done(); });
