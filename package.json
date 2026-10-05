@@ -29,7 +29,7 @@
     }
   ],
   "dependencies": {
-    "debug": "^3.2.7",
+    "debug": "^4.4.3",
     "eventsource": "^2.0.2",
     "inherits": "^2.0.4",
     "url-parse": "^1.5.10",
