@@ -12,6 +12,7 @@ require('./lib/main');
 require('./lib/main-node');
 require('./lib/node-websocket');
 require('./lib/node-eventsource');
+require('./lib/node-xhr');
 require('./lib/utils');
 require('./lib/receivers');
 require('./lib/senders');

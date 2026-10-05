@@ -70,8 +70,12 @@ function wrongUrl(Obj, url, statuses) {
     var x = new Obj('GET', url, null);
     x.timeout = 10000;
     x.on('chunk', function (status, text) {
-      done(new Error('No chunk should be received: ' + status + ', ' + text));
-      x.abort();
+      // servers may send a body with the error response (e.g. a 404 page);
+      // it must just never be reported as a successful chunk.
+      if (status === 200) {
+        done(new Error('No 200 chunk should be received: ' + status + ', ' + text));
+        x.abort();
+      }
     });
     x.on('finish', function (status, text) {
       if (test.timedOut || test.duration) {
