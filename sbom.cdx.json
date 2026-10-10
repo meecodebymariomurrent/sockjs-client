@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:ffe3405e-5fde-49e9-8f61-72e328c78a31",
+  "serialNumber": "urn:uuid:6624c168-2c47-450e-a4cf-16e4970e32cb",
   "metadata": {
-    "timestamp": "2026-10-10T10:46:17.774Z",
+    "timestamp": "2026-10-10T15:10:09.473Z",
     "tools": {
       "components": [
         {
@@ -102,7 +102,7 @@
       "version": "2.0.0",
       "bom-ref": "@meecode/sockjs-client@2.0.0",
       "author": "Bryce Kahle",
-      "description": "SockJS-client is a browser JavaScript library that provides a WebSocket-like object.",
+      "description": "Fork of sockjs-client (by Bryce Kahle and Marek Majkowski): a browser JavaScript library that provides a WebSocket-like object.",
       "licenses": [
         {
           "license": {

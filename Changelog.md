@@ -1,3 +1,7 @@
+> `@meecode/sockjs-client` is a fork of [sockjs-client](https://github.com/sockjs/sockjs-client), created by
+> Bryce Kahle and Marek Majkowski and the sockjs-client Authors (see [AUTHORS](AUTHORS)). Entries for versions up to
+> and including 1.6.1 are the original project's history; 2.0.0 and later are changes made in this fork.
+
 2.0.0
 ==
 Breaking

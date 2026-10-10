@@ -16,6 +16,18 @@ It keeps the same `SockJS` API and wire protocol (SockJS 0.3), so it works with
 existing SockJS servers, and adds a modernized Node.js and build stack.
 See the [Changelog](Changelog.md) for what is different in 2.0.
 
+## Credits and original authors
+
+SockJS-client was created by **Bryce Kahle** and **Marek Majkowski**, with
+contributions from the [sockjs-client Authors](AUTHORS) (including VMware,
+LearnBoost and Julian Aubourg) and many other contributors. All credit for the
+library, its design and the SockJS protocol belongs to them and to the
+[SockJS project](https://github.com/sockjs). This fork keeps the complete
+upstream git history, the original [MIT license](LICENSE) and copyright
+notice, and the [AUTHORS](AUTHORS) file. The original project lives at
+<https://github.com/sockjs/sockjs-client> and is published on npm as
+[`sockjs-client`](https://www.npmjs.com/package/sockjs-client).
+
 Migrating from `sockjs-client`:
 
     npm uninstall sockjs-client
