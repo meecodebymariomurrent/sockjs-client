@@ -1,5 +1,5 @@
 {
-  "name": "sockjs-client",
+  "name": "@meecode/sockjs-client",
   "description": "SockJS-client is a browser JavaScript library that provides a WebSocket-like object.",
   "version": "2.0.0",
   "author": "Bryce Kahle",
@@ -7,7 +7,6 @@
   "engines": {
     "node": ">=22.12"
   },
-  "funding": "https://tidelift.com/funding/github/npm/sockjs-client",
   "browser": {
     "./lib/transport/driver/websocket.js": "./lib/transport/browser/websocket.js",
     "./lib/transport/driver/xhr.js": "./lib/transport/browser/abstract-xhr.js",
@@ -16,7 +15,7 @@
     "./lib/transport/driver/eventsource.js": "./lib/transport/browser/eventsource.js"
   },
   "bugs": {
-    "url": "https://github.com/sockjs/sockjs-client/issues"
+    "url": "https://github.com/meecodebymariomurrent/sockjs-client/issues"
   },
   "contributors": [
     {
@@ -64,7 +63,7 @@
     "vinyl-buffer": "~1.0.0",
     "vinyl-source-stream": "^2.0.0"
   },
-  "homepage": "http://sockjs.org",
+  "homepage": "https://github.com/meecodebymariomurrent/sockjs-client#readme",
   "keywords": [
     "websockets",
     "websocket"
@@ -72,9 +71,24 @@
   "license": "MIT",
   "main": "./lib/entry.js",
   "types": "./dist/sockjs.d.ts",
+  "files": [
+    "lib/",
+    "dist/sockjs.js",
+    "dist/sockjs.js.map",
+    "dist/sockjs.min.js",
+    "dist/sockjs.min.js.map",
+    "dist/sockjs-esm.js",
+    "dist/sockjs.d.ts",
+    "AUTHORS",
+    "Changelog.md",
+    "sbom.cdx.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sockjs/sockjs-client.git"
+    "url": "git+https://github.com/meecodebymariomurrent/sockjs-client.git"
   },
   "scripts": {
     "test": "mocha tests/node.js",
