@@ -1,6 +1,12 @@
+> `@meecode/sockjs-client` is a fork of [sockjs-client](https://github.com/sockjs/sockjs-client), created by
+> Bryce Kahle and Marek Majkowski and the sockjs-client Authors (see [AUTHORS](AUTHORS)). Entries for versions up to
+> and including 1.6.1 are the original project's history; 2.0.0 and later are changes made in this fork.
+
 2.0.0
 ==
 Breaking
+ * The package is published as `@meecode/sockjs-client` (a fork of `sockjs-client`). Update your dependency and
+   `require`/`import` paths; the exported `SockJS` API is unchanged. TypeScript users get the typings from the new name.
  * Remove the legacy browser transports and their support code: `xdr-streaming`, `xdr-polling`, `htmlfile`,
    `jsonp-polling`, `iframe-eventsource`, `iframe-htmlfile` and `iframe-xhr-polling`, plus the ES5 shims, iframe
    bootstrap and `XDomainRequest` support. Only `websocket`, `xhr-streaming`, `eventsource` and `xhr-polling` remain.

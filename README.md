@@ -1,18 +1,47 @@
 
 # SockJS-client
 
-[![npm version](https://img.shields.io/npm/v/sockjs-client.svg?style=flat-square)](https://www.npmjs.com/package/sockjs-client)[![Dependencies](https://img.shields.io/librariesio/release/npm/sockjs-client.svg?style=flat-square)](https://libraries.io/npm/sockjs-client)[![Chat](https://img.shields.io/badge/Chat-gitter.im-blue.svg?style=flat-square)](https://gitter.im/sockjs/sockjs-client)[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg?style=flat-square)](CODE_OF_CONDUCT.md)
+[![npm version](https://img.shields.io/npm/v/@meecode/sockjs-client.svg?style=flat-square)](https://www.npmjs.com/package/@meecode/sockjs-client)[![Chat](https://img.shields.io/badge/Chat-gitter.im-blue.svg?style=flat-square)](https://gitter.im/sockjs/sockjs-client)[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg?style=flat-square)](CODE_OF_CONDUCT.md)
 [![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=N3V0cStKM3RtUy9Bb2l2cHFhMVdobTZnUitBZ1lLcUkwYnl2TWgyMHppQT0tLWxncU5UeTdLb0Rqc1VQQTI5SklRelE9PQ==--596ccf9d3cd2f462f1043ee6803a9405e00446ac)](https://automate.browserstack.com/public-build/N3V0cStKM3RtUy9Bb2l2cHFhMVdobTZnUitBZ1lLcUkwYnl2TWgyMHppQT0tLWxncU5UeTdLb0Rqc1VQQTI5SklRelE9PQ==--596ccf9d3cd2f462f1043ee6803a9405e00446ac)
 
 <a href="https://www.netlify.com">
   <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"/>
 </a>
 
-# SockJS for enterprise
+# About this fork
 
-Available as part of the Tidelift Subscription.
+`@meecode/sockjs-client` is a maintained fork of
+[sockjs-client](https://github.com/sockjs/sockjs-client) published by Meecode.
+It keeps the same `SockJS` API and wire protocol (SockJS 0.3), so it works with
+existing SockJS servers, and adds a modernized Node.js and build stack.
+See the [Changelog](Changelog.md) for what is different in 2.0.
 
-The maintainers of SockJS and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/npm-sockjs-client?utm_source=npm-sockjs-client&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
+## Credits and original authors
+
+SockJS-client was created by **Bryce Kahle** and **Marek Majkowski**, with
+contributions from the [sockjs-client Authors](AUTHORS) (including VMware,
+LearnBoost and Julian Aubourg) and many other contributors. All credit for the
+library, its design and the SockJS protocol belongs to them and to the
+[SockJS project](https://github.com/sockjs). This fork keeps the complete
+upstream git history, the original [MIT license](LICENSE) and copyright
+notice, and the [AUTHORS](AUTHORS) file. The original project lives at
+<https://github.com/sockjs/sockjs-client> and is published on npm as
+[`sockjs-client`](https://www.npmjs.com/package/sockjs-client).
+
+Migrating from `sockjs-client`:
+
+    npm uninstall sockjs-client
+    npm install @meecode/sockjs-client
+
+```javascript
+// before
+var SockJS = require('sockjs-client');
+// after
+var SockJS = require('@meecode/sockjs-client');
+```
+
+The legacy Internet Explorer transports were removed and Node.js 22.12 or newer is
+required; see the Changelog for the full list of breaking changes.
 
 # Summary
 
@@ -96,7 +125,7 @@ First, you need to load the SockJS JavaScript library. For example, you can
 put that in your HTML head:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@meecode/sockjs-client@2/dist/sockjs.min.js"></script>
 ```
 
 After the script is loaded you can establish a connection with the
@@ -231,11 +260,11 @@ want to do so).
 
 # Deployment
 
-You should use a version of sockjs-client
+You should use a version of @meecode/sockjs-client
 that supports the protocol used by your server. For example:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@meecode/sockjs-client@2/dist/sockjs.min.js"></script>
 ```
 
 
@@ -246,7 +275,7 @@ session stickiness, take a look at the
 
 ### Node.js
 
-When used from Node.js (not in a browser), sockjs-client requires Node.js 22 or newer
+When used from Node.js (not in a browser), @meecode/sockjs-client requires Node.js 22.12 or newer
 and uses [ws](https://github.com/websockets/ws) for the WebSocket transport.
 Options for it can be given via `transportOptions`:
 

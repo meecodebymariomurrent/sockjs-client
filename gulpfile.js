@@ -28,7 +28,7 @@ var browserifyOptions = {
     }
   ;
 
-var banner = '/* sockjs-client v<%= pkg.version %> | http://sockjs.org | MIT license */\n';
+var banner = '/* @meecode/sockjs-client v<%= pkg.version %> | fork of sockjs-client by Bryce Kahle, Marek Majkowski and contributors | MIT license */\n';
 
 gulp.task('write-version', function (cb) {
   fs.writeFile('./lib/version.js', "module.exports = '" + pkg.version + "';\n", cb);

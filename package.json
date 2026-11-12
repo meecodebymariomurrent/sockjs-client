@@ -1,13 +1,12 @@
 {
-  "name": "sockjs-client",
-  "description": "SockJS-client is a browser JavaScript library that provides a WebSocket-like object.",
+  "name": "@meecode/sockjs-client",
+  "description": "Fork of sockjs-client (by Bryce Kahle and Marek Majkowski): a browser JavaScript library that provides a WebSocket-like object.",
   "version": "2.0.0",
   "author": "Bryce Kahle",
   "jsdelivr": "dist/sockjs.min.js",
   "engines": {
     "node": ">=22.12"
   },
-  "funding": "https://tidelift.com/funding/github/npm/sockjs-client",
   "browser": {
     "./lib/transport/driver/websocket.js": "./lib/transport/browser/websocket.js",
     "./lib/transport/driver/xhr.js": "./lib/transport/browser/abstract-xhr.js",
@@ -16,7 +15,7 @@
     "./lib/transport/driver/eventsource.js": "./lib/transport/browser/eventsource.js"
   },
   "bugs": {
-    "url": "https://github.com/sockjs/sockjs-client/issues"
+    "url": "https://github.com/meecodebymariomurrent/sockjs-client/issues"
   },
   "contributors": [
     {
@@ -26,6 +25,14 @@
     {
       "name": "Marek Majkowski",
       "email": "deadbeef@popcount.org"
+    },
+    {
+      "name": "Mario Murrent",
+      "email": "office@meecode.at"
+    },
+    {
+      "name": "Meecode (maintainer of this fork)",
+      "url": "https://github.com/meecodebymariomurrent/sockjs-client"
     }
   ],
   "dependencies": {
@@ -64,17 +71,41 @@
     "vinyl-buffer": "~1.0.0",
     "vinyl-source-stream": "^2.0.0"
   },
-  "homepage": "http://sockjs.org",
+  "homepage": "https://github.com/meecodebymariomurrent/sockjs-client#readme",
   "keywords": [
     "websockets",
     "websocket"
   ],
   "license": "MIT",
   "main": "./lib/entry.js",
+  "module": "./dist/sockjs-esm.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/sockjs.d.ts",
+      "import": "./dist/sockjs-esm.mjs",
+      "require": "./lib/entry.js"
+    },
+    "./*": "./*"
+  },
   "types": "./dist/sockjs.d.ts",
+  "files": [
+    "lib/",
+    "dist/sockjs.js",
+    "dist/sockjs.js.map",
+    "dist/sockjs.min.js",
+    "dist/sockjs.min.js.map",
+    "dist/sockjs-esm.mjs",
+    "dist/sockjs.d.ts",
+    "AUTHORS",
+    "Changelog.md",
+    "sbom.cdx.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sockjs/sockjs-client.git"
+    "url": "git+https://github.com/meecodebymariomurrent/sockjs-client.git"
   },
   "scripts": {
     "test": "mocha tests/node.js",
@@ -83,7 +114,7 @@
     "test:browser_remote": "npm run test:bundle && npx karma start",
     "gulp": "gulp",
     "lint": "eslint .",
-    "build": "esbuild dist/sockjs.js --bundle --format=esm --outfile=dist/sockjs-esm.js",
+    "build": "esbuild dist/sockjs.js --bundle --format=esm --outfile=dist/sockjs-esm.mjs",
     "version": "gulp release && git add -A dist lib/version.js Changelog.md",
     "postversion": "npm publish",
     "postpublish": "git push origin --all && git push origin --tags",
@@ -95,5 +126,6 @@
     "uuid": "^11.1.1",
     "decode-uri-component": "^0.5.0",
     "postcss": "^8.5.23"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
