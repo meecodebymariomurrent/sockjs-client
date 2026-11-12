@@ -3,15 +3,15 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:6624c168-2c47-450e-a4cf-16e4970e32cb",
+  "serialNumber": "urn:uuid:86c2d1ec-6122-4b6d-9dc3-cbbbd5500f0c",
   "metadata": {
-    "timestamp": "2026-10-10T15:10:09.473Z",
+    "timestamp": "2026-11-12T09:47:37.744Z",
     "tools": {
       "components": [
         {
           "type": "application",
           "name": "npm",
-          "version": "10.9.8"
+          "version": "10.9.9"
         },
         {
           "type": "application",
@@ -177,7 +177,13 @@
         {
           "url": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "446c305a7c10be455f6af295b76d8518bc3ec5849dcc04709b4aeee83853540dee994e6165cdbc57790ee2cb6062bcab4e52e9baf808f468a28e5b408cd6dca8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -226,7 +232,13 @@
         {
           "url": "https://registry.npmjs.org/eventsource/-/eventsource-5.1.2.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5499f0aaaa7e7ce4f75839239d4cb8f59bb2878f3e907d09749029664b25ad1432c77e7321925e258265d3e6be2eb4f38794c5bfa31d9979c10efef551717259"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -274,7 +286,13 @@
         {
           "url": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "93fbc6697e3f6256b75b3c8c0af4d039761e207bea38ab67a8176ecd31e9ce9419cc0b2428c859d8af849c189233dcc64a820578ca572b16b8758799210a9ec1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -319,7 +337,13 @@
         {
           "url": "https://registry.npmjs.org/url-parse/-/url-parse-1.5.10.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5b2a5c7e24617de50ff6fbc5d23eabc3427786b5abc3a899bf7fb6da1ea244c27ff33d538fa5df2cfe03b148b1e4c84c3e75e98870e82b2a19fdb74293004289"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -364,7 +388,13 @@
         {
           "url": "https://registry.npmjs.org/ws/-/ws-8.22.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "61d82073df3bf913b40275ad67fed6abd16d36f72b2f56ff44ed2e77d9968d43e00ebb00030412179d6c9b6866d57a1f6d4ff88e4a4612c2c5b1967153ed433a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -412,7 +442,13 @@
         {
           "url": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e85973b9b4cb646dc9d9afcd542025784863ceae68c601f268253dc985ef70bb2fa1568726afece715c8ebf5d73fab73ed1f7100eb479d23bfb57b45dd645394"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -457,7 +493,13 @@
         {
           "url": "https://registry.npmjs.org/eventsource-parser/-/eventsource-parser-4.1.1.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cda58da9e48b7b2cc4000b7643a6830510d193f5673e6b0aaaf4e8c86befe9a6a1bcbbfbd40e09c3b8c6f771dc91fd75cd7bab6ea82c7dfbe94a028fa1e53543"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -506,7 +548,13 @@
         {
           "url": "https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "148aa08f6114bd36bb479d2ed2b1acc937edce3626bff6b784edf8e5b64daea69b36a8ed8220cc826a389a452377e9f3539a05ddd0a52aa1483d42b26d4caaa1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
@@ -551,7 +599,13 @@
         {
           "url": "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz",
           "type": "distribution",
-          "comment": "as detected from npm-ls property \"resolved\""
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "2a280e087728714dd7383271b2ef22fe3f13f6dcd3e1a74789e730391450d19645729eda8705ee454d66fb2b8ef740b9654c867867e87070c8d783372f7c8301"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
         }
       ],
       "properties": [
