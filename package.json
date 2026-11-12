@@ -78,6 +78,15 @@
   ],
   "license": "MIT",
   "main": "./lib/entry.js",
+  "module": "./dist/sockjs-esm.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/sockjs.d.ts",
+      "import": "./dist/sockjs-esm.mjs",
+      "require": "./lib/entry.js"
+    },
+    "./*": "./*"
+  },
   "types": "./dist/sockjs.d.ts",
   "files": [
     "lib/",
@@ -85,7 +94,7 @@
     "dist/sockjs.js.map",
     "dist/sockjs.min.js",
     "dist/sockjs.min.js.map",
-    "dist/sockjs-esm.js",
+    "dist/sockjs-esm.mjs",
     "dist/sockjs.d.ts",
     "AUTHORS",
     "Changelog.md",
@@ -105,7 +114,7 @@
     "test:browser_remote": "npm run test:bundle && npx karma start",
     "gulp": "gulp",
     "lint": "eslint .",
-    "build": "esbuild dist/sockjs.js --bundle --format=esm --outfile=dist/sockjs-esm.js",
+    "build": "esbuild dist/sockjs.js --bundle --format=esm --outfile=dist/sockjs-esm.mjs",
     "version": "gulp release && git add -A dist lib/version.js Changelog.md",
     "postversion": "npm publish",
     "postpublish": "git push origin --all && git push origin --tags",

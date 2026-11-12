@@ -13,9 +13,9 @@ var __commonJS = (cb, mod) => function __require2() {
   }
 };
 
-// ../../mnt/sockjs-client/dist/sockjs.js
+// dist/sockjs.js
 var require_sockjs = __commonJS({
-  "../../mnt/sockjs-client/dist/sockjs.js"(exports, module) {
+  "dist/sockjs.js"(exports, module) {
     (function(f) {
       if (typeof exports === "object" && typeof module !== "undefined") {
         module.exports = f();
